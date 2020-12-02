@@ -1,0 +1,14 @@
+<resources>
+
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="android:actionButtonStyle">@style/ActionButtonStyle</item>
+    </style>
+    
+<style name="ActionButtonStyle" parent="@android:style/Widget.Holo.Light.ActionButton">
+    <item name="android:minWidth">0dip</item>
+    <item name="android:paddingStart">4dip</item>
+    <item name="android:paddingEnd">4dip</item>                  
+</style>
+
+</resources>

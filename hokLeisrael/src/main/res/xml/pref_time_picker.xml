@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="notifications_CB_timeNotificationDaily"
+        android:title="@string/pref_notification_daily" />
+    
+     <com.eran.hokleisrael.TimePickerPref
+        android:key="timePref_timeNotificationDaily"
+        android:title="@string/pref_time_notification_daily"
+        android:dependency="notifications_CB_timeNotificationDaily"/>  
+    
+     
+     
+     <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="notifications_CB_timeFridayNotification"
+        android:title="@string/pref_time_friday_notification" 
+        android:summary="@string/pref_time_friday_notification_summary"/>
+     
+ <!--     <EditTextPreference
+        android:key="editTextPref_timeFridayBeforeNotification"
+        android:title="@string/pref_time_friday_before_notification"
+        android:defaultValue="0"
+        android:inputType="number"
+        android:dependency="notifications_CB_timeFridayNotificationDaily"/>
+     -->
+
+
+</PreferenceScreen>

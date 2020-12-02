@@ -1,0 +1,79 @@
+<LinearLayout 
+   android:layout_width="match_parent"
+   android:layout_height="match_parent"
+   xmlns:android="http://schemas.android.com/apk/res/android"
+   android:background="@drawable/background_activty">
+    <ScrollView
+         android:layout_width="match_parent"
+         android:layout_height="match_parent">
+
+<LinearLayout 
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+         
+    <Button
+        android:id="@+id/day1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="יום ראשון"
+        android:onClick="SelectDay"
+        android:tag="1"/>
+    <Button
+        android:id="@+id/day2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="יום שני"
+        android:onClick="SelectDay"
+        android:tag="2"/>
+     <Button
+        android:id="@+id/day3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="יום שלישי"
+        android:onClick="SelectDay"
+        android:tag="3"/>
+      <Button
+        android:id="@+id/day4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="יום רביעי"
+        android:onClick="SelectDay"
+        android:tag="4"/>
+       <Button
+        android:id="@+id/day5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="יום חמישי"
+        android:onClick="SelectDay"
+        android:tag="5"/>
+       <Button
+        android:id="@+id/day6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ליל שישי"
+        android:onClick="SelectDay"
+        android:tag="6"/>
+       <Button
+        android:id="@+id/day7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="יום שישי"
+        android:onClick="SelectDay"
+        android:tag="7"/>
+       
+       <Button
+        android:id="@+id/ShabatBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="יום שבת"
+        android:onClick="SelectDay"
+        android:tag="7"
+        android:visibility="gone"/>
+   
+   
+		</LinearLayout>
+
+	</ScrollView>
+ </LinearLayout>

@@ -1,0 +1,109 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+
+  <!--  <item
+        android:id="@+id/selectStudy"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="בחר לימוד"/>
+    -->
+     
+    <item
+        android:id="@+id/selectAliya"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="בחר עליה"/>
+     <!-- 
+     <item
+        android:id="@+id/nextDay"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="ליום הבא"/>
+     
+      <item
+        android:id="@+id/previousDay"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="ליום הקודם"/>
+      -->
+       <item
+        android:id="@+id/dailyAppendix"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="תוספות יומיות"
+        android:visible="false"/>
+       
+        <item
+        android:id="@+id/voiceHokLeisrael"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="חוק לישראל המוקלט"
+        android:visible="true"/>
+        
+      <item android:id="@+id/addBookmarks"
+          android:title="הוסף לסימניות"
+          android:showAsAction="never" 
+           android:orderInCategory="100"
+          />
+      
+     <item
+        android:id="@+id/nightMode"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="מצב לילה"/>
+     
+      <item
+        android:id="@+id/more"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="הגדרות נוספות">
+	     <menu>
+	            <item
+			        android:id="@+id/zoomUp"
+			        android:orderInCategory="100"
+			        android:showAsAction="never"
+			        android:title="הגדל פונט"
+			        android:icon="@android:drawable/btn_plus"/>
+			     
+			      <item
+			        android:id="@+id/zoomDown"
+			        android:orderInCategory="100"
+			        android:showAsAction="never"
+			        android:title="הקטן פונט"
+			        android:icon="@android:drawable/btn_minus"/>
+	        </menu>
+       </item>
+     
+    
+     
+       <item
+        android:id="@+id/nextDay"
+        android:title="ליום הבא"
+        android:showAsAction="always"
+        android:icon="@drawable/left_arrow"
+        ></item>
+     
+      <item
+        android:id="@+id/previousDay"
+        android:title="ליום הקודם"
+        android:showAsAction="always"
+        android:icon="@drawable/right_arrow"
+ 		></item>
+       
+      <!--   <item android:id="@+id/addBookmarksActionBar"
+          android:title="הוסף לסימניות"
+          android:showAsAction="always" 
+          android:visible="false"
+          android:icon="@android:drawable/btn_star"
+          /> -->
+        
+     <item android:id="@+id/selectStudyActionBar"
+          android:title="בחר לימוד"
+          android:showAsAction="always"
+          android:visible="false"
+          android:icon="@drawable/paragraphs_list_dark"
+          ></item>
+     
+    
+
+</menu>

@@ -1,0 +1,125 @@
+<LinearLayout 
+   android:layout_width="match_parent"
+   android:layout_height="match_parent"
+   xmlns:android="http://schemas.android.com/apk/res/android"
+   android:background="@drawable/background_activty"
+   >
+    <ScrollView
+         android:layout_width="match_parent"
+         android:layout_height="match_parent">
+
+<LinearLayout 
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+    
+  <Button
+        android:id="@+id/CurrentDay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="הלימוד היומי"
+        android:onClick="CurrentDay"
+        
+        />
+   		<Button
+        android:id="@+id/LastLoction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="שחזר מיקום אחרון"
+        android:onClick="LastLocation"
+        
+        />
+   		
+   		<Button
+        android:id="@+id/history"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="היסטוריה"
+        android:onClick="openHistory"
+        />
+   		
+   		<Button
+        android:id="@+id/bookmarks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="סימניות"
+        android:onClick="openBookmarks"
+        
+        />
+    <Button
+        android:id="@+id/Appendix"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="תוספות"
+        android:onClick="SelectAppendix"
+        />     
+    <Button
+        android:id="@+id/HumashBreshit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="בראשית"
+        android:onClick="SelectHumash"
+        android:tag="Breshit"
+       />
+    <Button
+        android:id="@+id/HumashShmot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="שמות"
+        android:onClick="SelectHumash"
+        android:tag="Shmot"
+       />
+     <Button
+        android:id="@+id/HumashVayikra"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ויקרא"
+        android:onClick="SelectHumash"
+        android:tag="Vayikra"
+        />
+      <Button
+        android:id="@+id/HumashBamidbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="במדבר"
+        android:onClick="SelectHumash"
+        android:tag="Bamidbar"
+        />
+       <Button
+        android:id="@+id/HumashDvarim"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="דברים"
+        android:onClick="SelectHumash"
+        android:tag="Dvarim"
+        />
+     
+   <Button
+        android:id="@+id/Settings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="הגדרות"
+        android:onClick="OpenSettings"
+       
+        />
+   <Button
+        android:id="@+id/Help"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="עזרה"
+        android:onClick="OpenHelp"
+        
+        />
+    <Button
+        android:id="@+id/About"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="אודות"
+        android:onClick="OpenAbout"
+        
+        />
+		</LinearLayout>
+
+	</ScrollView>
+ </LinearLayout>

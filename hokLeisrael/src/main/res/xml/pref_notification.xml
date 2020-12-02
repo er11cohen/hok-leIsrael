@@ -1,0 +1,16 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+   
+    <RingtonePreference
+        android:defaultValue="content://settings/system/notification_sound"
+        android:key="notifications_new_message_ringtone"
+        android:ringtoneType="notification"
+        android:title="@string/pref_title_ringtone" />
+
+   
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="notifications_new_message_vibrate"
+        android:title="@string/pref_title_vibrate" />
+
+</PreferenceScreen>

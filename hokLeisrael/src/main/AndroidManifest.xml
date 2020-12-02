@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.eran.hokleisrael"
+    android:versionCode="10805"
+    android:versionName="1.8.5" >
+
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="27" />
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />  
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />  
+
+    <application
+        android:allowBackup="true"
+        android:hardwareAccelerated="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+         <!--  android:screenOrientation="portrait"-->
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+           android:configChanges="orientation|screenSize" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".WebActivity"
+            android:label="@string/title_activity_web"
+           android:configChanges="orientation|screenSize">
+        </activity>
+        <activity
+            android:name=".ParashotActivity"
+            android:label="@string/title_activity_parashot"
+             >
+        </activity>
+        <activity
+            android:name=".DayActivity"
+            android:label="@string/title_activity_day"
+           >
+        </activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"
+          >
+        </activity>
+        
+ 		<activity
+            android:name=".AppendixActivity"
+            android:label="@string/title_activity_appendix" >
+        </activity>
+        <activity
+            android:name=".Bookmarks"
+            android:label="@string/title_activity_bookmarks" >
+        </activity>
+         <activity
+            android:name=".Gallery"
+            android:label="@string/title_activity_gallery"
+            android:configChanges="orientation|screenSize"
+            >
+        </activity>
+        
+        <receiver
+            android:name=".AlarmReceiver"
+            android:enabled="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="com.eran.hokleisrael.android.action.broadcast" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".AlarmService2" />
+
+       
+    </application>
+
+</manifest>

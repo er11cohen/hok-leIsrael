@@ -1,0 +1,84 @@
+<resources>
+
+    <string name="title_activity_settings">הגדרות</string>
+
+    <string name="pref_header_general">General</string>
+    <string name="pref_description_AlignText">יישור לימין - אם במכשירך הטקסטים מוצגים הפוך או אם הניקוד לעיתים אינו מתחת לאותיות</string>
+     <string name="pref_description_RemoveNikud">הסרת טעמים וניקוד - אם מכשירך לא תומך בטעמים וניקוד</string>
+    <string name="pref_description_LiveInIsrael">מיקום - אני גר בישראל (נדרש כדי לחשב את הלימוד היומי)</string>
+
+    
+    <string name="pref_header_phone">טלפון</string>
+    
+     <string name="pref_title_phone_status">מצב הטלפון בעת הלימוד</string>
+     
+    <string name="pref_fullScreen">אפשר מסך מלא בעת הלימוד</string>
+     <string name="pref_keepScreenOn">מנע כיבוי מסך בעת הלימוד</string>
+
+    <string-array name="pref_phone_status_titles">
+        <item>ללא שינוי</item>
+         <item>שקט</item>
+        <item>רטט</item>
+    </string-array>
+    <string-array name="pref_phone_status_values">
+        <item>-1</item>
+         <item>0</item>
+        <item>1</item>
+    </string-array>
+    
+     <string name="pref_title_ringtone">רינגטון</string>
+    <string name="pref_title_vibrate">רטט</string>
+     <string name="pref_header_notification">תזכורות</string>
+	  <string name="pref_notification_daily">תזכורת יומית</string>
+	  <string name="pref_time_notification_daily">הגדר זמן תזכורת יומית</string>
+	  <string name="pref_time_friday_notification">תזכורת  לימוד ליל שישי</string>
+	  	  <string name="pref_time_friday_notification_summary">התזכורת מאפשרת לקבל התרעה עבור לימוד ליל שישי בחצות</string>
+	  <string name="pref_time_friday_before_notification">הגדר זמן תזכורת לפני לימוד ליל שישי בדקות</string>
+    
+    
+    
+    
+    
+    
+    <string-array name="pref_example_list_titles">
+        <item>Always</item>
+        <item>When possible</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_example_list_values">
+        <item>1</item>
+        <item>0</item>
+        <item>-1</item>
+    </string-array>
+
+    <!-- Example settings for Data & Sync -->
+    <string name="pref_header_data_sync">Data &amp; sync</string>
+    <string name="pref_title_sync_frequency">Sync frequency</string>
+
+    <string-array name="pref_sync_frequency_titles">
+        <item>15 minutes</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
+        <item>3 hours</item>
+        <item>6 hours</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_sync_frequency_values">
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>180</item>
+        <item>360</item>
+        <item>-1</item>
+    </string-array>
+
+    <string name="pref_title_system_sync_settings">System sync settings</string>
+
+    <!-- Example settings for Notifications -->
+    <string name="pref_header_notifications">Notifications</string>
+    <string name="pref_title_new_message_notifications">New message notifications</string>
+    <!--<string name="pref_title_ringtone">Ringtone</string>-->
+    <string name="pref_ringtone_silent">Silent</string>
+    <!--<string name="pref_title_vibrate">Vibrate</string>-->
+
+</resources>

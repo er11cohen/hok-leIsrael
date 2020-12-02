@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">חוק לישראל</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_web">WebActivity</string>
+    <string name="title_activity_parashot">בחר פרשה</string>
+    <string name="title_activity_day">בחר יום</string>
+    <string name="help">
+<![CDATA[אבא    <a href=\"http:\\www.google.com\">יום טוב</a>
+        <br>
+         גם לך
+        ]]>
+    </string>
+    <string name="cancel">ביטול</string>
+    <string name="title_activity_appendix">תוספות</string>
+    <string name="title_activity_gallery">היסטוריה</string>
+    <string name="title_activity_bookmarks">סימניות</string>
+
+</resources>

@@ -1,0 +1,45 @@
+<LinearLayout 
+   android:layout_width="match_parent"
+   android:layout_height="match_parent"
+   xmlns:android="http://schemas.android.com/apk/res/android"
+   android:background="@drawable/background_activty">
+    <ScrollView
+         android:layout_width="match_parent"
+         android:layout_height="match_parent">
+
+<LinearLayout 
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+         
+    <Button
+        android:id="@+id/Intro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="הקדמות"
+        android:onClick="selectIntro"/>
+    <Button
+        android:id="@+id/mamadot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="מעמדות"
+        android:onClick="selectMamadot"/>
+   
+     <Button
+        android:id="@+id/orhotHaim"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="אורחות חיים"
+        android:onClick="selectOrhotHaim"/>
+     
+      <Button
+        android:id="@+id/hatzatilHakatan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="הצעטיל הקטן"
+        android:onClick="selectHatzatilHakatan"/>
+		</LinearLayout>
+
+	</ScrollView>
+ </LinearLayout>

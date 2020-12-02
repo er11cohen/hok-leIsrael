@@ -1,0 +1,46 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <CheckBoxPreference
+        android:key="CBAlignText"
+        android:summary="@string/pref_description_AlignText"
+         android:icon="@drawable/text_align_left"
+		/>
+  
+ <CheckBoxPreference
+        android:key="CBRemoveNikud"
+        android:summary="@string/pref_description_RemoveNikud"
+         android:icon="@drawable/nikud"
+		/>
+  <CheckBoxPreference
+      	android:defaultValue="true"
+        android:key="CBLiveInIsrael"
+        android:summary="@string/pref_description_LiveInIsrael"
+         android:icon="@drawable/israeltransparent"
+		/>
+  
+   <CheckBoxPreference
+        android:key="CBFullScreen"
+        android:summary="@string/pref_fullScreen"
+        android:icon="@drawable/fullscreen"
+		/>
+    <!--   android:icon="@android:drawable/ic_lock_power_off"-->
+    
+     <CheckBoxPreference
+        android:key="CBKeepScreenOn"
+        android:summary="@string/pref_keepScreenOn"
+        android:icon="@drawable/keepscreenon"
+		/>
+        
+   <ListPreference
+        android:defaultValue="-1"
+        android:entries="@array/pref_phone_status_titles"
+        android:entryValues="@array/pref_phone_status_values"
+        android:key="phone_status"
+        android:negativeButtonText="@string/cancel"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_title_phone_status" 
+        android:icon="@drawable/mute" />
+
+   
+
+</PreferenceScreen>

@@ -1,0 +1,279 @@
+ECLIPSE ANDROID PROJECT IMPORT SUMMARY
+======================================
+
+Risky Project Location:
+-----------------------
+The tools *should* handle project locations in any directory. However,
+due to bugs, placing projects in directories containing spaces in the
+path, or characters like ", ' and &, have had issues. We're working to
+eliminate these bugs, but to save yourself headaches you may want to
+move your project to a location where this is not a problem.
+D:\Eran\EranDev\Android Develop\StudioProjects\HokLeisrael
+                       -                                  
+
+Manifest Merging:
+-----------------
+Your project uses libraries that provide manifests, and your Eclipse
+project did not explicitly turn on manifest merging. In Android Gradle
+projects, manifests are always merged (meaning that contents from your
+libraries' manifests will be merged into the app manifest. If you had
+manually copied contents from library manifests into your app manifest
+you may need to remove these for the app to build correctly.
+
+Ignored Files:
+--------------
+The following files were *not* copied into the new Gradle project; you
+should evaluate whether these are still needed in your project and if
+so manually move them:
+
+From HokLeisrael:
+* META-INF\
+* META-INF\MANIFEST.MF
+* com\
+* com\google\
+* com\google\gson\
+* com\google\gson\DefaultDateTypeAdapter.class
+* com\google\gson\ExclusionStrategy.class
+* com\google\gson\FieldAttributes.class
+* com\google\gson\FieldNamingPolicy$1.class
+* com\google\gson\FieldNamingPolicy$2.class
+* com\google\gson\FieldNamingPolicy$3.class
+* com\google\gson\FieldNamingPolicy$4.class
+* com\google\gson\FieldNamingPolicy$5.class
+* com\google\gson\FieldNamingPolicy.class
+* com\google\gson\FieldNamingStrategy.class
+* com\google\gson\Gson$1.class
+* com\google\gson\Gson$2.class
+* com\google\gson\Gson$3.class
+* com\google\gson\Gson$4.class
+* com\google\gson\Gson$5.class
+* com\google\gson\Gson$FutureTypeAdapter.class
+* com\google\gson\Gson.class
+* com\google\gson\GsonBuilder.class
+* com\google\gson\InstanceCreator.class
+* com\google\gson\JsonArray.class
+* com\google\gson\JsonDeserializationContext.class
+* com\google\gson\JsonDeserializer.class
+* com\google\gson\JsonElement.class
+* com\google\gson\JsonIOException.class
+* com\google\gson\JsonNull.class
+* com\google\gson\JsonObject.class
+* com\google\gson\JsonParseException.class
+* com\google\gson\JsonParser.class
+* com\google\gson\JsonPrimitive.class
+* com\google\gson\JsonSerializationContext.class
+* com\google\gson\JsonSerializer.class
+* com\google\gson\JsonStreamParser.class
+* com\google\gson\JsonSyntaxException.class
+* com\google\gson\LongSerializationPolicy$1.class
+* com\google\gson\LongSerializationPolicy$2.class
+* com\google\gson\LongSerializationPolicy.class
+* com\google\gson\TreeTypeAdapter$1.class
+* com\google\gson\TreeTypeAdapter$SingleTypeFactory.class
+* com\google\gson\TreeTypeAdapter.class
+* com\google\gson\TypeAdapter$1.class
+* com\google\gson\TypeAdapter.class
+* com\google\gson\TypeAdapterFactory.class
+* com\google\gson\annotations\
+* com\google\gson\annotations\Expose.class
+* com\google\gson\annotations\SerializedName.class
+* com\google\gson\annotations\Since.class
+* com\google\gson\annotations\Until.class
+* com\google\gson\internal\
+* com\google\gson\internal\$Gson$Preconditions.class
+* com\google\gson\internal\$Gson$Types$GenericArrayTypeImpl.class
+* com\google\gson\internal\$Gson$Types$ParameterizedTypeImpl.class
+* com\google\gson\internal\$Gson$Types$WildcardTypeImpl.class
+* com\google\gson\internal\$Gson$Types.class
+* com\google\gson\internal\ConstructorConstructor$1.class
+* com\google\gson\internal\ConstructorConstructor$10.class
+* com\google\gson\internal\ConstructorConstructor$11.class
+* com\google\gson\internal\ConstructorConstructor$12.class
+* com\google\gson\internal\ConstructorConstructor$2.class
+* com\google\gson\internal\ConstructorConstructor$3.class
+* com\google\gson\internal\ConstructorConstructor$4.class
+* com\google\gson\internal\ConstructorConstructor$5.class
+* com\google\gson\internal\ConstructorConstructor$6.class
+* com\google\gson\internal\ConstructorConstructor$7.class
+* com\google\gson\internal\ConstructorConstructor$8.class
+* com\google\gson\internal\ConstructorConstructor$9.class
+* com\google\gson\internal\ConstructorConstructor.class
+* com\google\gson\internal\Excluder$1.class
+* com\google\gson\internal\Excluder.class
+* com\google\gson\internal\JsonReaderInternalAccess.class
+* com\google\gson\internal\LazilyParsedNumber.class
+* com\google\gson\internal\LinkedTreeMap$1.class
+* com\google\gson\internal\LinkedTreeMap$EntrySet$1.class
+* com\google\gson\internal\LinkedTreeMap$EntrySet.class
+* com\google\gson\internal\LinkedTreeMap$KeySet$1.class
+* com\google\gson\internal\LinkedTreeMap$KeySet.class
+* com\google\gson\internal\LinkedTreeMap$LinkedTreeMapIterator.class
+* com\google\gson\internal\LinkedTreeMap$Node.class
+* com\google\gson\internal\LinkedTreeMap.class
+* com\google\gson\internal\ObjectConstructor.class
+* com\google\gson\internal\Primitives.class
+* com\google\gson\internal\Streams$1.class
+* com\google\gson\internal\Streams$AppendableWriter$CurrentWrite.class
+* com\google\gson\internal\Streams$AppendableWriter.class
+* com\google\gson\internal\Streams.class
+* com\google\gson\internal\UnsafeAllocator$1.class
+* com\google\gson\internal\UnsafeAllocator$2.class
+* com\google\gson\internal\UnsafeAllocator$3.class
+* com\google\gson\internal\UnsafeAllocator$4.class
+* com\google\gson\internal\UnsafeAllocator.class
+* com\google\gson\internal\bind\
+* com\google\gson\internal\bind\ArrayTypeAdapter$1.class
+* com\google\gson\internal\bind\ArrayTypeAdapter.class
+* com\google\gson\internal\bind\CollectionTypeAdapterFactory$Adapter.class
+* com\google\gson\internal\bind\CollectionTypeAdapterFactory.class
+* com\google\gson\internal\bind\DateTypeAdapter$1.class
+* com\google\gson\internal\bind\DateTypeAdapter.class
+* com\google\gson\internal\bind\JsonTreeReader$1.class
+* com\google\gson\internal\bind\JsonTreeReader.class
+* com\google\gson\internal\bind\JsonTreeWriter$1.class
+* com\google\gson\internal\bind\JsonTreeWriter.class
+* com\google\gson\internal\bind\MapTypeAdapterFactory$Adapter.class
+* com\google\gson\internal\bind\MapTypeAdapterFactory.class
+* com\google\gson\internal\bind\ObjectTypeAdapter$1.class
+* com\google\gson\internal\bind\ObjectTypeAdapter$2.class
+* com\google\gson\internal\bind\ObjectTypeAdapter.class
+* com\google\gson\internal\bind\ReflectiveTypeAdapterFactory$1.class
+* com\google\gson\internal\bind\ReflectiveTypeAdapterFactory$Adapter.class
+* com\google\gson\internal\bind\ReflectiveTypeAdapterFactory$BoundField.class
+* com\google\gson\internal\bind\ReflectiveTypeAdapterFactory.class
+* com\google\gson\internal\bind\SqlDateTypeAdapter$1.class
+* com\google\gson\internal\bind\SqlDateTypeAdapter.class
+* com\google\gson\internal\bind\TimeTypeAdapter$1.class
+* com\google\gson\internal\bind\TimeTypeAdapter.class
+* com\google\gson\internal\bind\TypeAdapterRuntimeTypeWrapper.class
+* com\google\gson\internal\bind\TypeAdapters$1.class
+* com\google\gson\internal\bind\TypeAdapters$10.class
+* com\google\gson\internal\bind\TypeAdapters$11.class
+* com\google\gson\internal\bind\TypeAdapters$12.class
+* com\google\gson\internal\bind\TypeAdapters$13.class
+* com\google\gson\internal\bind\TypeAdapters$14.class
+* com\google\gson\internal\bind\TypeAdapters$15.class
+* com\google\gson\internal\bind\TypeAdapters$16.class
+* com\google\gson\internal\bind\TypeAdapters$17.class
+* com\google\gson\internal\bind\TypeAdapters$18.class
+* com\google\gson\internal\bind\TypeAdapters$19.class
+* com\google\gson\internal\bind\TypeAdapters$2.class
+* com\google\gson\internal\bind\TypeAdapters$20.class
+* com\google\gson\internal\bind\TypeAdapters$21.class
+* com\google\gson\internal\bind\TypeAdapters$22$1.class
+* com\google\gson\internal\bind\TypeAdapters$22.class
+* com\google\gson\internal\bind\TypeAdapters$23.class
+* com\google\gson\internal\bind\TypeAdapters$24.class
+* com\google\gson\internal\bind\TypeAdapters$25.class
+* com\google\gson\internal\bind\TypeAdapters$26.class
+* com\google\gson\internal\bind\TypeAdapters$27.class
+* com\google\gson\internal\bind\TypeAdapters$28.class
+* com\google\gson\internal\bind\TypeAdapters$29.class
+* com\google\gson\internal\bind\TypeAdapters$3.class
+* com\google\gson\internal\bind\TypeAdapters$30.class
+* com\google\gson\internal\bind\TypeAdapters$31.class
+* com\google\gson\internal\bind\TypeAdapters$32.class
+* com\google\gson\internal\bind\TypeAdapters$4.class
+* com\google\gson\internal\bind\TypeAdapters$5.class
+* com\google\gson\internal\bind\TypeAdapters$6.class
+* com\google\gson\internal\bind\TypeAdapters$7.class
+* com\google\gson\internal\bind\TypeAdapters$8.class
+* com\google\gson\internal\bind\TypeAdapters$9.class
+* com\google\gson\internal\bind\TypeAdapters$EnumTypeAdapter.class
+* com\google\gson\internal\bind\TypeAdapters.class
+* com\google\gson\reflect\
+* com\google\gson\reflect\TypeToken.class
+* com\google\gson\stream\
+* com\google\gson\stream\JsonReader$1.class
+* com\google\gson\stream\JsonReader.class
+* com\google\gson\stream\JsonScope.class
+* com\google\gson\stream\JsonToken.class
+* com\google\gson\stream\JsonWriter.class
+* com\google\gson\stream\MalformedJsonException.class
+* playstore-icon.png
+* proguard-project.txt
+From Utils:
+* ic_launcher-web.png
+* proguard-project.txt
+From supertoasts:
+* build.gradle
+
+Replaced Jars with Dependencies:
+--------------------------------
+The importer recognized the following .jar files as third party
+libraries and replaced them with Gradle dependencies instead. This has
+the advantage that more explicit version information is known, and the
+libraries can be updated automatically. However, it is possible that
+the .jar file in your project was of an older version than the
+dependency we picked, which could render the project not compileable.
+You can disable the jar replacement in the import wizard and try again:
+
+android-support-v4.jar => com.android.support:support-v4:27.1.1
+android-support-v7-appcompat.jar => com.android.support:appcompat-v7:27.1.1
+gson-2.2.4.jar => com.google.code.gson:gson:2.2.4
+
+Potentially Missing Dependency:
+-------------------------------
+When we replaced the following .jar files with a Gradle dependency, we
+inferred the dependency version number from the filename. This
+specific version may not actually be available from the repository.
+If you get a build error stating that the dependency is missing, edit
+the version number to for example "+" to pick up the latest version
+instead. (This may require you to update your code if the library APIs
+have changed.)
+
+gson-2.2.4.jar => version 2.2.4 in com.google.code.gson:gson:2.2.4
+gson-2.2.4.jar => version 2.2.4 in com.google.code.gson:gson:2.2.4
+
+Replaced Libraries with Dependencies:
+-------------------------------------
+The importer recognized the following library projects as third party
+libraries and replaced them with Gradle dependencies instead. This has
+the advantage that more explicit version information is known, and the
+libraries can be updated automatically. However, it is possible that
+the source files in your project were of an older version than the
+dependency we picked, which could render the project not compileable.
+You can disable the library replacement in the import wizard and try
+again:
+
+android-support-v7-appcompat => [com.android.support:appcompat-v7:27.1.1]
+
+Moved Files:
+------------
+Android Gradle projects use a different directory structure than ADT
+Eclipse projects. Here's how the projects were restructured:
+
+In supertoasts:
+* AndroidManifest.xml => supertoasts\src\main\AndroidManifest.xml
+* assets\ => supertoasts\src\main\assets
+* res\ => supertoasts\src\main\res\
+* src\ => supertoasts\src\main\java\
+In Utils:
+* AndroidManifest.xml => utils\src\main\AndroidManifest.xml
+* assets\ => utils\src\main\assets
+* libs\zmanim-1.3.0.jar => utils\libs\zmanim-1.3.0.jar
+* lint.xml => utils\lint.xml
+* res\ => utils\src\main\res\
+* src\ => utils\src\main\java\
+In HokLeisrael:
+* AndroidManifest.xml => hokLeisrael\src\main\AndroidManifest.xml
+* assets\ => hokLeisrael\src\main\assets\
+* libs\zmanim-1.3.0.jar => hokLeisrael\libs\zmanim-1.3.0.jar
+* lint.xml => hokLeisrael\lint.xml
+* res\ => hokLeisrael\src\main\res\
+* src\ => hokLeisrael\src\main\java\
+
+Next Steps:
+-----------
+You can now build the project. The Gradle project needs network
+connectivity to download dependencies.
+
+Bugs:
+-----
+If for some reason your project does not build, and you determine that
+it is due to a bug or limitation of the Eclipse to Gradle importer,
+please file a bug at http://b.android.com with category
+Component-Tools.
+
+(This import summary is for your information only, and can be deleted
+after import once you are satisfied with the results.)
