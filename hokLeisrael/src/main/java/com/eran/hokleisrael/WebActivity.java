@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -68,6 +69,7 @@ public class WebActivity extends Activity {
     MenuItem nightModeItem;
     String[] daysHebrew = {"יום ראשון", "יום שני", "יום שלישי", "יום רביעי", "יום חמישי", "ליל שישי", "יום שישי"};
     String[] daysHebrewRegular = {"יום ראשון", "יום שני", "יום שלישי", "יום רביעי", "יום חמישי", "יום שישי", "יום שבת"};
+    String[] aliyotArr = {"ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שביעי"};
     String doubleHaftara = "Vayetse,Pkude,Shmot,Vayakhel,Aharemot,Kdoshim";
     SharedPreferences HLPreferences;
     SharedPreferences defaultSharedPreferences;
@@ -115,9 +117,9 @@ public class WebActivity extends Activity {
             actionBar = getActionBar();
             actionBar.setDisplayHomeAsUpEnabled(true);
             if (fullScreen) {
-                getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
                 actionBar.hide();
             }
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
 
         boolean keepScreenOn = defaultSharedPreferences.getBoolean("CBKeepScreenOn", false);
@@ -266,11 +268,14 @@ public class WebActivity extends Activity {
             MenuItem studyActionBar = optionsMenu.findItem(R.id.selectStudyActionBar);
             //MenuItem study = optionsMenu.findItem(R.id.selectStudy);
             MenuItem aliya = optionsMenu.findItem(R.id.selectAliya);
+            MenuItem dailyAliya = optionsMenu.findItem(R.id.dailyAliya);
 
             if (isHokLeisrael()) {
                 aliya.setVisible(true);
+                dailyAliya.setVisible(true);
             } else {
                 aliya.setVisible(false);
+                dailyAliya.setVisible(false);
             }
             if (weekly || parshEn.equals("hatzatilHakatan")) {
                 studyActionBar.setVisible(false);
@@ -290,14 +295,12 @@ public class WebActivity extends Activity {
 
         //MenuItem nightModeItem = optionsMenu.findItem(R.id.nightMode);
         Utils.NightMode(false, HLPreferences, wv, nightModeItem);
-        if (RemoveNikud()) {
-            //wv.loadUrl("javascript:document.body.innerHTML=document.body.innerHTML.replace(/[\u0500-\u05CF]/g, \"\")");
-            Utils.loadJS(wv, "document.body.innerHTML=document.body.innerHTML.replace(/[\u0500-\u05CF]/g, \"\")");
-        }
-        if (AlignText()) {
-            //wv.loadUrl("javascript:document.body.innerHTML=document.body.innerHTML.replace('justify', 'right')");
-            Utils.loadJS(wv, "document.body.innerHTML=document.body.innerHTML.replace('justify', 'right')");
-        }
+//        if (RemoveNikud()) {
+//            Utils.loadJS(wv, "document.body.innerHTML=document.body.innerHTML.replace(/[\u0500-\u05CF]/g, \"\")");
+//        }
+//        if (AlignText()) {
+//            Utils.loadJS(wv, "document.body.innerHTML=document.body.innerHTML.replace('justify', 'right')");
+//        }
 
         //String font = "var link = document.createElement('style'); link.type = 'text/css';  link.rel = 'stylesheet';  link.innerHTML= '@font-face {font-family:eran; src: url(\"file:///android_asset/fonts/Alef.ttf\");} body{font-family: eran;}'; document.getElementsByTagName('head')[0].appendChild(link)";
         //wv.loadUrl("javascript:" + font);
@@ -348,12 +351,15 @@ public class WebActivity extends Activity {
         if (weekly || parshEn.equals("hatzatilHakatan")) {
             //menu.findItem(R.id.selectStudy).setVisible(false);
             menu.findItem(R.id.selectAliya).setVisible(false);
+            menu.findItem(R.id.dailyAliya).setVisible(false);
         }
 
         if (isHokLeisrael()) {
             menu.findItem(R.id.selectAliya).setVisible(true);
+            menu.findItem(R.id.dailyAliya).setVisible(true);
         } else {
             menu.findItem(R.id.selectAliya).setVisible(false);
+            menu.findItem(R.id.dailyAliya).setVisible(false);
         }
         // end for old phone
 
@@ -369,6 +375,9 @@ public class WebActivity extends Activity {
             //case R.id.selectStudy:
             case R.id.selectStudyActionBar:
                 openContextMenu(progressBar);
+                break;
+            case R.id.dailyAliya:
+                openDailyAliya();
                 break;
             case R.id.selectAliya:
                 openAliya();
@@ -518,17 +527,17 @@ public class WebActivity extends Activity {
     }
 
 
-    private boolean AlignText() {
-        boolean alignText = defaultSharedPreferences.getBoolean("CBAlignText", false);
-        //Toast.makeText(WebActivity.this,Boolean.toString(alignText) + " CBAlignText",Toast.LENGTH_LONG).show();
-        return alignText;
-    }
-
-    private boolean RemoveNikud() {
-        boolean removeNikud = defaultSharedPreferences.getBoolean("CBRemoveNikud", false);
-        //Toast.makeText(WebActivity.this,Boolean.toString(removeNikud) + " CBRemoveNikud",Toast.LENGTH_LONG).show();
-        return removeNikud;
-    }
+//    private boolean AlignText() {
+//        boolean alignText = defaultSharedPreferences.getBoolean("CBAlignText", false);
+//        //Toast.makeText(WebActivity.this,Boolean.toString(alignText) + " CBAlignText",Toast.LENGTH_LONG).show();
+//        return alignText;
+//    }
+//
+//    private boolean RemoveNikud() {
+//        boolean removeNikud = defaultSharedPreferences.getBoolean("CBRemoveNikud", false);
+//        //Toast.makeText(WebActivity.this,Boolean.toString(removeNikud) + " CBRemoveNikud",Toast.LENGTH_LONG).show();
+//        return removeNikud;
+//    }
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
@@ -760,16 +769,20 @@ public class WebActivity extends Activity {
         LoadWebView();
     }
 
-    private void openAliya() {
-        final String[] aliyotArr = {"ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שביעי"};
+    private void openDailyAliya() {
+        Calendar c = Calendar.getInstance();
+        final int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+        aliyaMenuSelected(dayOfWeek, aliyotArr[dayOfWeek - 1]);
+    }
 
+    private void openAliya() {
         new AlertDialog.Builder(this)
                 .setTitle("בחר עליה")
                 .setItems(aliyotArr,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int i) {
                                 aliyaMenuSelected(i + 1, aliyotArr[i]);
-                                //Toast.makeText(getApplicationContext(),Integer.toString(i),Toast.LENGTH_LONG).show();
+                              //  Toast.makeText(getApplicationContext(),Integer.toString(i),Toast.LENGTH_LONG).show();
                             }
                         })
                 .show();

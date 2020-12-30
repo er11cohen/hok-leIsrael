@@ -7,7 +7,12 @@
         android:showAsAction="never"
         android:title="בחר לימוד"/>
     -->
-     
+	<item
+		android:id="@+id/dailyAliya"
+		android:orderInCategory="100"
+		android:showAsAction="never"
+		android:title="העליה היומית"/>
+
     <item
         android:id="@+id/selectAliya"
         android:orderInCategory="100"

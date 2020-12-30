@@ -259,27 +259,25 @@ public class Utils extends Activity
 		  utilFullScreen = fullScreen;
 		  
 		  final GestureDetector gs = new GestureDetector
-          		(   context,//getBaseContext(),
+          		(   context,
                       new GestureDetector.SimpleOnGestureListener() 
                       {
                           @SuppressLint("NewApi")
 							@Override
                           public boolean onDoubleTap(MotionEvent e) 
                           {
-                          	 //float x = e.getX(); float y = e.getY(); Toast.makeText( getBaseContext(),"Tapped at: (" + x + "," + y + ")",Toast.LENGTH_LONG).show();
-                          	
+
                           	if (!utilFullScreen) 
                           	{
-                          		activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                          		// activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
               			        actionBar.hide();
 							}
                           	else 
                           	{
-                          		activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                          		// activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
                           		actionBar.show();
 							}
-                          	
-                          //	fullScreen = !fullScreen;
+
                           	utilFullScreen = !utilFullScreen;
                           	return true;
                           }
@@ -288,7 +286,7 @@ public class Utils extends Activity
 		  
 			 if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB)
 				{
-				 
+
 				 WebView wv = (WebView)activity.findViewById(webView);
 				 wv.setOnTouchListener(new OnTouchListener() {
 				            @Override
