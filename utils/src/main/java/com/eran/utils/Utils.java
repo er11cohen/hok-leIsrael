@@ -361,35 +361,35 @@ public class Utils extends Activity
 		 
 	  //need permission
 	  // <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-	  public static void appendLog(String text, String fileName)
-	  {       
-	     File logFile = new File(Environment.getExternalStorageDirectory() + "/" +fileName);
-	     if (!logFile.exists())
-	     {
-	        try
-	        {
-	           logFile.createNewFile();
-	        } 
-	        catch (IOException e)
-	        {
-	           // TODO Auto-generated catch block
-	           e.printStackTrace();
-	        }
-	     }
-	     try
-	     {
-	        //BufferedWriter for performance, true to set append to file flag
-	        BufferedWriter buf = new BufferedWriter(new FileWriter(logFile, true)); 
-	        buf.append("\n" + "new Log \n" + text);
-	        buf.newLine();
-	        buf.close();
-	     }
-	     catch (IOException e)
-	     {
-	        // TODO Auto-generated catch block
-	        e.printStackTrace();
-	     }
-	  }
+//	  public static void appendLog(String text, String fileName)
+//	  {
+//	     File logFile = new File(Environment.getExternalStorageDirectory() + "/" +fileName);
+//	     if (!logFile.exists())
+//	     {
+//	        try
+//	        {
+//	           logFile.createNewFile();
+//	        }
+//	        catch (IOException e)
+//	        {
+//	           // TODO Auto-generated catch block
+//	           e.printStackTrace();
+//	        }
+//	     }
+//	     try
+//	     {
+//	        //BufferedWriter for performance, true to set append to file flag
+//	        BufferedWriter buf = new BufferedWriter(new FileWriter(logFile, true));
+//	        buf.append("\n" + "new Log \n" + text);
+//	        buf.newLine();
+//	        buf.close();
+//	     }
+//	     catch (IOException e)
+//	     {
+//	        // TODO Auto-generated catch block
+//	        e.printStackTrace();
+//	     }
+//	  }
 	  
 	  @SuppressLint("NewApi")
 	public static void loadJS( WebView  wv, String jsStr)
@@ -631,5 +631,14 @@ public class Utils extends Activity
 			 
 	    	return  Html.fromHtml(html);
 		}
+
+	@SuppressLint("NewApi")
+	public static File getFilePath(Context context) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+			return context.getExternalFilesDir(null);
+		}
+
+		return Environment.getExternalStorageDirectory();
+	}
 
 }

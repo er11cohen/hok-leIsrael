@@ -140,10 +140,10 @@ public class MainActivity extends Activity {
 	}
 
 	public void LastLocation(View v) {
-		if (!Utils.isPermissionWriteRequired(MainActivity.this, 1, true))
-		{
+		//if (!Utils.isPermissionWriteRequired(MainActivity.this, 1, true))
+		// {
 			sendLocationToWebView("last");
-		}
+		// }
 	}
 
 	public void OpenSettings(View v) {
@@ -593,11 +593,11 @@ public class MainActivity extends Activity {
 	}
 
 	public void openHistory(View v) {
-		if (!Utils.isPermissionWriteRequired(MainActivity.this, 2, true))
-		{
+//		if (!Utils.isPermissionWriteRequired(MainActivity.this, 2, true))
+//		{
 			Intent intent = new Intent(getApplicationContext(), Gallery.class);
 			startActivityForResult(intent, 3);
-		}
+//		}
 	}
 	
 	@SuppressLint("NewApi")

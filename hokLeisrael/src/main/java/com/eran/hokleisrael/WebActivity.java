@@ -13,11 +13,9 @@ import java.util.List;
 import java.util.Map;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -26,12 +24,9 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.media.AudioManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.text.Html;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.GestureDetector;
@@ -439,91 +434,92 @@ public class WebActivity extends Activity {
         if (!phoneStatus.equals("-1") && startRingerMode != 0/*silent*/) {
             am.setRingerMode(startRingerMode);
         }
-        if (!Utils.isPermissionWriteRequired(WebActivity.this, 0, false)) {
-            File folder = new File(Environment.getExternalStorageDirectory()
-                    + appName);
-            boolean success = true;
-            if (!folder.exists()) {
-                success = folder.mkdir();
+        saveLastLocation();
+    }
+
+    private void saveLastLocation() {
+        // getBaseContext().getExternalFilesDir(null)
+        //  if (!Utils.isPermissionWriteRequired(WebActivity.this, 0, false)) {
+        File path = Utils.getFilePath(getApplicationContext());
+        File folder = new File(path + appName);
+        boolean success = true;
+        if (!folder.exists()) {
+            success = folder.mkdir();
+        }
+
+        if (success && pageReady) {
+            SharedPreferences preferencesLocations = getSharedPreferences(
+                    "Locations", MODE_PRIVATE);
+            String preferencesLocationsJson = preferencesLocations
+                    .getString("preferencesLocationsJson", null);
+
+            if (preferencesLocationsJson == null)// for second install,
+            // remove the old files
+            {
+                if (folder.isDirectory()) {
+                    String[] children = folder.list();
+                    for (int i = 0; i < children.length; i++) {
+                        new File(folder, children[i]).delete();
+                    }
+                }
             }
 
-            if (success && pageReady) {
-                SharedPreferences preferencesLocations = getSharedPreferences(
-                        "Locations", MODE_PRIVATE);
-                String preferencesLocationsJson = preferencesLocations
-                        .getString("preferencesLocationsJson", null);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+            String timeSaved = sdf.format(new Date());
 
-                if (preferencesLocationsJson == null)// for second install,
-                // remove the old files
-                {
-                    if (folder.isDirectory()) {
-                        String[] children = folder.list();
-                        for (int i = 0; i < children.length; i++) {
-                            new File(folder, children[i]).delete();
+            View content = findViewById(R.id.layout);
+            content.setDrawingCacheEnabled(true);
+            Bitmap bitmap = content.getDrawingCache();
+            File file = new File(path + appName + "/" + timeSaved + ".png");
+            ArrayList<Parash> locationList = new ArrayList<Parash>();
+            Gson gson = new Gson();
+            try {
+                file.createNewFile();
+                FileOutputStream ostream = new FileOutputStream(file);
+                bitmap.compress(CompressFormat.PNG, 100, ostream);
+                ostream.close();
+
+                Parash location = new Parash();
+                location.setParshHe(parshHe);
+                location.setDay(day);
+                location.setParshEn(parshEn);
+                location.setHumashEn(humashEn);
+                int scrollY = wv.getScrollY();
+                location.setScrollY(scrollY);
+                location.setWeekly(weekly);
+                location.setIsCurrentDay(isCurrentDay);
+                location.setTimeSaved(timeSaved);
+
+                if (preferencesLocationsJson != null) {
+                    locationList = gson.fromJson(preferencesLocationsJson,
+                            new TypeToken<ArrayList<Parash>>() {
+                            }.getType());
+                    if (locationList.size() >= 10) {
+                        String idFirstLocation = locationList.get(0)
+                                .getTimeSaved();
+                        File imageToDelete = new File(path + appName + "/" + idFirstLocation + ".png");
+                        if (imageToDelete.exists()) {
+                            boolean deleted = imageToDelete.delete();
                         }
+
+                        locationList.remove(0);
                     }
                 }
 
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
-                String timeSaved = sdf.format(new Date());
+                locationList.add(location);
 
-                View content = findViewById(R.id.layout);
-                content.setDrawingCacheEnabled(true);
-                Bitmap bitmap = content.getDrawingCache();
-                File file = new File(Environment.getExternalStorageDirectory()
-                        + appName + "/" + timeSaved + ".png");
-                ArrayList<Parash> locationList = new ArrayList<Parash>();
-                Gson gson = new Gson();
-                try {
-                    file.createNewFile();
-                    FileOutputStream ostream = new FileOutputStream(file);
-                    bitmap.compress(CompressFormat.PNG, 100, ostream);
-                    ostream.close();
+                String json = gson.toJson(locationList);
 
-                    Parash location = new Parash();
-                    location.setParshHe(parshHe);
-                    location.setDay(day);
-                    location.setParshEn(parshEn);
-                    location.setHumashEn(humashEn);
-                    int scrollY = wv.getScrollY();
-                    location.setScrollY(scrollY);
-                    location.setWeekly(weekly);
-                    location.setIsCurrentDay(isCurrentDay);
-                    location.setTimeSaved(timeSaved);
+                SharedPreferences.Editor editor = preferencesLocations
+                        .edit();
+                editor.putString("preferencesLocationsJson", json);
+                editor.commit();
 
-                    if (preferencesLocationsJson != null) {
-                        locationList = gson.fromJson(preferencesLocationsJson,
-                                new TypeToken<ArrayList<Parash>>() {
-                                }.getType());
-                        if (locationList.size() >= 10) {
-                            String idFirstLocation = locationList.get(0)
-                                    .getTimeSaved();
-                            File imageToDelete = new File(
-                                    Environment.getExternalStorageDirectory()
-                                            + appName + "/" + idFirstLocation
-                                            + ".png");
-                            if (imageToDelete.exists()) {
-                                boolean deleted = imageToDelete.delete();
-                            }
-
-                            locationList.remove(0);
-                        }
-                    }
-
-                    locationList.add(location);
-
-                    String json = gson.toJson(locationList);
-
-                    SharedPreferences.Editor editor = preferencesLocations
-                            .edit();
-                    editor.putString("preferencesLocationsJson", json);
-                    editor.commit();
-
-                } catch (Exception e) {
-                    // e.printStackTrace();
-                }
+            } catch (Exception e) {
+                // e.printStackTrace();
             }
         }
+        //  }
     }
 
 
@@ -851,8 +847,11 @@ public class WebActivity extends Activity {
         wv.setFindListener(new FindListener() {
 
             public void onFindResultReceived(int activeMatchOrdinal, int numberOfMatches, boolean isDoneCounting) {
-                //Toast.makeText(getApplicationContext(), "activeMatchOrdinal "+activeMatchOrdinal + " Matches: " + numberOfMatches + " isDoneCounting: " + isDoneCounting, Toast.LENGTH_LONG).show();
-                wv.clearMatches();//clear the finds
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        wv.clearMatches();//clear the finds
+                    }
+                }, 300);
             }
         });
     }

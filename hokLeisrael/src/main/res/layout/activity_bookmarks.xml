@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:text="לחץ לחיצה ארוכה על הסימנייה על מנת למוחקה." 
-        android:layout_gravity="right"
+        android:layout_gravity="center_horizontal"
         android:paddingBottom="6dp"/>
     
   <LinearLayout
