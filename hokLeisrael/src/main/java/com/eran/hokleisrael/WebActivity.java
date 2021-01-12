@@ -72,7 +72,6 @@ public class WebActivity extends Activity {
     AudioManager am;
     String phoneStatus;
     int startRingerMode = 2;//RINGER_MODE_NORMAL
-    GestureDetector gs = null;
     ActionBar actionBar = null;
     int timeToLoad = 2000;//1100;
     boolean weekly = false;
@@ -212,7 +211,6 @@ public class WebActivity extends Activity {
 
         wv.setWebViewClient(new WebViewClient() {
 
-
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
@@ -236,9 +234,6 @@ public class WebActivity extends Activity {
                     }, timeToLoad);
                 } else {
                     ChangeWebViewBySettings();
-                    if (scrollY == 0) {
-                        wv.scrollTo(0, 0);
-                    }
                     pageReady = true;
                     Utils.setOpacity(wv, 1);
                 }
@@ -600,75 +595,57 @@ public class WebActivity extends Activity {
                 wv.scrollTo(0, 0);
                 break;
             case 2:
-                //wv.loadUrl("javascript:window.location.hash = '';window.location.hash = '#navie';");
                 hash = "navie";
                 break;
             case 3:
-                //wv.loadUrl("javascript:window.location.hash = '';window.location.hash = '#ketuvim';");
                 hash = "ketuvim";
                 break;
             case 4:
-                //wv.loadUrl("javascript:window.location.hash = '';window.location.hash = '#misnha';");
                 hash = "misnha";
                 break;
             case 5:
-                //wv.loadUrl("javascript:window.location.hash = '';window.location.hash = '#gemara';");
                 hash = "gemara";
                 break;
             case 6:
-                //wv.loadUrl("javascript:window.location.hash = '';window.location.hash = '#zohar';");
                 hash = "zohar";
                 break;
             case 7:
-                //wv.loadUrl("javascript:window.location.hash = '';window.location.hash = '#hlacha';");
                 hash = "hlacha";
                 break;
             case 8:
-                //wv.loadUrl("javascript:window.location.hash = '';window.location.hash = '#musar';");
                 hash = "musar";
                 break;
             case 9:
-                //wv.loadUrl("javascript:window.location.hash = '';window.location.hash = '#haftara';");
                 hash = "haftara";
                 break;
             case 10:
-                //wv.loadUrl("javascript:window.location.hash = '';window.location.hash = '#haftaraAshkenaz';");
                 hash = "haftaraAshkenaz";
                 break;
             case 11:
-                //wv.loadUrl("javascript:window.location.hash = '';window.location.hash = '#introMahrchu';");
                 hash = "introMahrchu";
                 break;
             case 12:
-                //wv.loadUrl("javascript:window.location.hash = '';window.location.hash = '#introTora';");
                 hash = "introTora";
                 break;
             case 13:
-                //wv.loadUrl("javascript:window.location.hash = '';window.location.hash = '#introNavie';");
                 hash = "introNavie";
                 break;
             case 14:
-                //wv.loadUrl("javascript:window.location.hash = '';window.location.hash = '#introKetuvim';");
                 hash = "introKetuvim";
                 break;
             case 15:
-                //wv.loadUrl("javascript:window.location.hash = '';window.location.hash = '#introMishna';");
                 hash = "introMishna";
                 break;
             case 16:
-                //wv.loadUrl("javascript:window.location.hash = '';window.location.hash = '#introHlacha';");
                 hash = "introHlacha";
                 break;
             case 17:
-                //wv.loadUrl("javascript:window.location.hash = '';window.location.hash = '#introKabala';");
                 hash = "introKabala";
                 break;
             case 18:
-                //wv.loadUrl("javascript:window.location.hash = '';window.location.hash = '#introHidah';");
                 hash = "introHidah";
                 break;
             case 19:
-                //wv.loadUrl("javascript:window.location.hash = '';window.location.hash = '#introMaseRokeh';");
                 hash = "introMaseRokeh";
                 break;
             case 20:
