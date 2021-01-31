@@ -269,13 +269,13 @@ public class Utils extends Activity
 
                           	if (!utilFullScreen) 
                           	{
-                          		// activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-              			        actionBar.hide();
+                          		activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+              			      // actionBar.hide();
 							}
                           	else 
                           	{
-                          		// activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-                          		actionBar.show();
+                          		activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                          	  // actionBar.show();
 							}
 
                           	utilFullScreen = !utilFullScreen;

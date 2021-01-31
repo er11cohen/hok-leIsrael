@@ -111,9 +111,9 @@ public class WebActivity extends Activity {
             actionBar = getActionBar();
             actionBar.setDisplayHomeAsUpEnabled(true);
             if (fullScreen) {
-                actionBar.hide();
+                // actionBar.hide();
+                getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             }
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
 
         boolean keepScreenOn = defaultSharedPreferences.getBoolean("CBKeepScreenOn", false);
