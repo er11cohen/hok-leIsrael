@@ -75,7 +75,7 @@ public class MainActivity extends Activity {
 		WeakReferenceActivity = new WeakReference<Activity>(this);
 
 		String version = HLPreferences.getString("version", "-1");
-		if (!version.equals("1.8.7")) {
+		if (!version.equals("1.8.8")) {
 			String message = Utils.ReadTxtFile("files/newVersion.txt",
 					getApplicationContext());
 			((TextView) new AlertDialog.Builder(this)
@@ -93,7 +93,7 @@ public class MainActivity extends Activity {
 					.setMovementMethod(LinkMovementMethod.getInstance());
 
 			SharedPreferences.Editor editor = HLPreferences.edit();
-			editor.putString("version", "1.8.7");
+			editor.putString("version", "1.8.8");
 			editor.commit();
 		}
 
