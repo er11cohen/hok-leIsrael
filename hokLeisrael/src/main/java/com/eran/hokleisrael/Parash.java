@@ -4,158 +4,157 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Parash implements Parcelable {//more efficient than Serializable 
- 
-	 private String timeSaved = null;//for gallery file name
-	
-	 private String humashEn;
-	 private String humashHe;
-	 private String parshHe;
-	 private String parshEn;
-	 private int parshIndex;
-	
-	
-	 private int day;
-	 private int scrollY = 0;
-	 private Boolean weekly = false;//?????? ?? ????? ??? ???? ???? ?????? ??????? ???? 
-	 private Boolean isCurrentDay = false;//for daily Limud - hok leisrael ?? ???? ??? ?????? ????? ?????? ?? ???? ????
-	 private String title;
-		 
-	 public Parash()
-	 {
-		 
-	 }
-	 public Parash(int parshIndex,String parshHe, String parshEn, String humashEn)
-	 {
-		this.parshIndex=parshIndex;
-		this.parshEn=parshEn;
-		this.parshHe=parshHe;
-		this.humashEn=humashEn;
-	 }
-	
-	
-	public String getHumashEn() {
-		return humashEn;
-	}
-	public void setHumashEn(String humashEn) {
-		this.humashEn = humashEn;
-	}
 
-	public String getHumashHe() {
-		return humashHe;
-	}
-	public void setHumashHe(String humashHe) {
-		this.humashHe = humashHe;
-	}
-	
-	
-	public String getParshHe() {
-		return parshHe;
-	}
-	
-	public void setParshHe(String parshHe) {
-		this.parshHe = parshHe;
-	}
-	
-	public String getParshEn() {
-		return parshEn;
-	}
-	
-	public void setParshEn(String parshEn) {
-		this.parshEn = parshEn;
-	}
-	
-	public int getParshIndex() {
-		return parshIndex;
-	}
-	public void setParshIndex(int parshIndex) {
-		this.parshIndex = parshIndex;
-	}
-	
-	
-	 
-	
-	
-	 public Parash(String parshHe, String parshEn, String humashEn,
-			 int day, int scrollY,Boolean weekly,Boolean isCurrentDay, String title)
-	 {
-		this.parshEn=parshEn;
-		this.parshHe=parshHe;
-		this.humashEn=humashEn;
-		
-		this.day=day;
-		this.scrollY=scrollY;
-		this.weekly=weekly;
-		this.isCurrentDay=isCurrentDay;
-		this.title=title;
-	 }
-	 
-	    public int getDay() {
-			return day;
-		}
-		public void setDay(int day) {
-			this.day = day;
-		}
-	
-		 public int getScrollY() {
-				return scrollY;
-			}
-			
-		 public void setScrollY(int scrollY) {
-				this.scrollY = scrollY;
-			}
+    private String timeSaved = null;//for gallery file name
+
+    private String humashEn;
+    private String humashHe;
+    private String parshHe;
+    private String parshEn;
+    private int parshIndex;
 
 
-		public Boolean getWeekly() {
-			return weekly;
-		}
+    private int day;
+    private int scrollY = 0;
+    private Boolean weekly = false;//?????? ?? ????? ??? ???? ???? ?????? ??????? ????
+    private Boolean isCurrentDay = false;//for daily Limud - hok leisrael ?? ???? ??? ?????? ????? ?????? ?? ???? ????
+    private String title;
+
+    public Parash() {
+
+    }
+
+    public Parash(int parshIndex, String parshHe, String parshEn, String humashEn) {
+        this.parshIndex = parshIndex;
+        this.parshEn = parshEn;
+        this.parshHe = parshHe;
+        this.humashEn = humashEn;
+    }
 
 
-		public void setWeekly(Boolean weekly) {
-			this.weekly = weekly;
-		}
+    public String getHumashEn() {
+        return humashEn;
+    }
+
+    public void setHumashEn(String humashEn) {
+        this.humashEn = humashEn;
+    }
+
+    public String getHumashHe() {
+        return humashHe;
+    }
+
+    public void setHumashHe(String humashHe) {
+        this.humashHe = humashHe;
+    }
 
 
-		public Boolean getIsCurrentDay() {
-			return isCurrentDay;
-		}
+    public String getParshHe() {
+        return parshHe;
+    }
+
+    public void setParshHe(String parshHe) {
+        this.parshHe = parshHe;
+    }
+
+    public String getParshEn() {
+        return parshEn;
+    }
+
+    public void setParshEn(String parshEn) {
+        this.parshEn = parshEn;
+    }
+
+    public int getParshIndex() {
+        return parshIndex;
+    }
+
+    public void setParshIndex(int parshIndex) {
+        this.parshIndex = parshIndex;
+    }
 
 
-		public void setIsCurrentDay(Boolean isCurrentDay) {
-			this.isCurrentDay = isCurrentDay;
-		}
+    public Parash(String parshHe, String parshEn, String humashEn,
+                  int day, int scrollY, Boolean weekly, Boolean isCurrentDay, String title) {
+        this.parshEn = parshEn;
+        this.parshHe = parshHe;
+        this.humashEn = humashEn;
+
+        this.day = day;
+        this.scrollY = scrollY;
+        this.weekly = weekly;
+        this.isCurrentDay = isCurrentDay;
+        this.title = title;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
+    }
+
+    public int getScrollY() {
+        return scrollY;
+    }
+
+    public void setScrollY(int scrollY) {
+        this.scrollY = scrollY;
+    }
 
 
-		public String getTitle() {
-			return title;
-		}
+    public Boolean getWeekly() {
+        return weekly;
+    }
 
 
-		public void setTitle(String title) {
-			this.title = title;
-		}
-
-		public String getTimeSaved() {
-			return timeSaved;
-		}
+    public void setWeekly(Boolean weekly) {
+        this.weekly = weekly;
+    }
 
 
-		public void setTimeSaved(String timeSaved) {
-			this.timeSaved = timeSaved;
-		}
+    public Boolean getIsCurrentDay() {
+        return isCurrentDay;
+    }
 
-		@Override
-		public String toString() {
+
+    public void setIsCurrentDay(Boolean isCurrentDay) {
+        this.isCurrentDay = isCurrentDay;
+    }
+
+
+    public String getTitle() {
+        return title;
+    }
+
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getTimeSaved() {
+        return timeSaved;
+    }
+
+
+    public void setTimeSaved(String timeSaved) {
+        this.timeSaved = timeSaved;
+    }
+
+    @Override
+    public String toString() {
 		/*	return "Parash [humashEn=" + humashEn + ", parshHe=" + parshHe
 					+ ", parshEn=" + parshEn + ", day=" + day + ", scrollY="
 					+ scrollY + ", weekly=" + weekly + ", isCurrentDay="
 					+ isCurrentDay + ", title=" + title + "]";
 					*/
-			return this.title;
-		}
-		
-		public String getKey() {
-			return humashEn + "_" + parshEn + "_" + day;
-		}
+        return this.title;
+    }
+
+    public String getKey() {
+        return humashEn + "_" + parshEn + "_" + day;
+    }
 
     protected Parash(Parcel in) {
         timeSaved = in.readString();

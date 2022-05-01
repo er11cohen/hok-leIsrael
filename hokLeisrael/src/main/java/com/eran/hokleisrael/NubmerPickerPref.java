@@ -1,25 +1,23 @@
 package com.eran.hokleisrael;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.NumberPicker;
-import android.widget.NumberPicker.OnValueChangeListener;
-import android.widget.Toast;
 
-public class NubmerPickerPref extends DialogPreference { 
+public class NubmerPickerPref extends DialogPreference {
 
     private int Minute = 0;
-    private NumberPicker np= null;
+    private NumberPicker np = null;
+
     //private NubmerPickerPref nubmerPickerPref = null;
     public static int getMinute(String time) {
-       // String[] pieces = time.split(":");
-      //  int minute = Integer.parseInt(pieces[1]);
-    	int minute = Integer.parseInt(time);
+        // String[] pieces = time.split(":");
+        //  int minute = Integer.parseInt(pieces[1]);
+        int minute = Integer.parseInt(time);
         return (minute);
     }
 
@@ -29,18 +27,18 @@ public class NubmerPickerPref extends DialogPreference {
         setPositiveButtonText("אישור");
         setNegativeButtonText("ביטול");
         //nubmerPickerPref = this;
-       
+
     }
 
     @SuppressLint("NewApi")
-	@Override
+    @Override
     protected View onCreateDialogView() {
         np = new NumberPicker(getContext());
         return (np);
     }
 
     @SuppressLint("NewApi")
-	@Override
+    @Override
     protected void onBindDialogView(View v) {
         super.onBindDialogView(v);
         np.setMaxValue(180);
@@ -54,18 +52,17 @@ public class NubmerPickerPref extends DialogPreference {
         });*/
     }
 
- 
-    
+
     @SuppressLint("NewApi")
-	@Override
-    protected void onDialogClosed(boolean positiveResult) {                                                             
+    @Override
+    protected void onDialogClosed(boolean positiveResult) {
         super.onDialogClosed(positiveResult);
 
         if (positiveResult) {
 
             Minute = np.getValue();
 
-           // String time = 0 + ":" + String.valueOf(Minute);
+            // String time = 0 + ":" + String.valueOf(Minute);
             String time = String.valueOf(Minute);
             if (callChangeListener(time)) {
                 persistString(time);

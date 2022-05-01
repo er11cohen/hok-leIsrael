@@ -1,17 +1,6 @@
 package com.eran.hokleisrael;
 
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.lang.ref.WeakReference;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
@@ -29,7 +18,6 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,6 +33,17 @@ import android.widget.Toast;
 import com.eran.utils.Utils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.lang.ref.WeakReference;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 //Toast.makeText(WebActivity.this,Integer.toString(scrollY),Toast.LENGTH_LONG).show();
@@ -755,7 +754,7 @@ public class WebActivity extends Activity {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int i) {
                                 aliyaMenuSelected(i + 1, aliyotArr[i]);
-                              //  Toast.makeText(getApplicationContext(),Integer.toString(i),Toast.LENGTH_LONG).show();
+                                //  Toast.makeText(getApplicationContext(),Integer.toString(i),Toast.LENGTH_LONG).show();
                             }
                         })
                 .show();
