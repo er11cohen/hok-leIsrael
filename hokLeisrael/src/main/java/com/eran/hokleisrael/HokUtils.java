@@ -46,7 +46,7 @@ public class HokUtils extends Activity {
 		Intent alarmReciverIntent = new Intent(context, AlarmReceiver.class);
 		alarmReciverIntent.putExtra("notificationType", "daily");  
 		
-		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, alarmReciverIntent, PendingIntent.FLAG_UPDATE_CURRENT); 
+		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, alarmReciverIntent, PendingIntent.FLAG_IMMUTABLE);
 		
 		String timeNotificationDaily = prefs.getString("timePref_timeNotificationDaily", "00:00");
 		String[] time = timeNotificationDaily.split(":");
@@ -75,7 +75,7 @@ public class HokUtils extends Activity {
 		//cancel daily notification
 		
 		Intent alarmReciverDailyCancelIntent = new Intent(context, AlarmReceiver.class);
-		PendingIntent pendingCancelIntent = PendingIntent.getBroadcast(context, 0, alarmReciverDailyCancelIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+		PendingIntent pendingCancelIntent = PendingIntent.getBroadcast(context, 0, alarmReciverDailyCancelIntent, PendingIntent.FLAG_IMMUTABLE);
 		alarmManager.cancel(pendingCancelIntent);
 	}
 
@@ -85,7 +85,7 @@ public class HokUtils extends Activity {
 	{
 		Intent alarmReciverIntent = new Intent(context, AlarmReceiver.class);
 		alarmReciverIntent.putExtra("notificationType","friday");
-		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 2, alarmReciverIntent, PendingIntent.FLAG_UPDATE_CURRENT); 
+		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 2, alarmReciverIntent, PendingIntent.FLAG_IMMUTABLE); 
 		
 		
 		
@@ -127,7 +127,7 @@ public class HokUtils extends Activity {
 		//cancel friday notification
 		
 		Intent alarmReciverFridayCancelIntent = new Intent(context, AlarmReceiver.class);
-		PendingIntent pendingFridayCancelIntent = PendingIntent.getBroadcast(context, 2, alarmReciverFridayCancelIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+		PendingIntent pendingFridayCancelIntent = PendingIntent.getBroadcast(context, 2, alarmReciverFridayCancelIntent, PendingIntent.FLAG_IMMUTABLE);
 		alarmManager.cancel(pendingFridayCancelIntent);
 	}
    
@@ -235,7 +235,7 @@ public class HokUtils extends Activity {
 		
 		
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-	    PendingIntent pendingIntent  = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+	    PendingIntent pendingIntent  = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
 	    final int notifyID = 1; 
 	    NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
 

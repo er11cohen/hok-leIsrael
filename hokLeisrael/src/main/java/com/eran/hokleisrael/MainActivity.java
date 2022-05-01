@@ -99,7 +99,6 @@ public class MainActivity extends Activity {
 
 		onNewIntent(getIntent());
 		callToAlarmReceiver();
-
 	}
 
 	private void callToAlarmReceiver() {
