@@ -37,10 +37,10 @@ public class HokUtils extends Activity {
         //Bundle extraService = new Bundle();
         boolean timeCBNotificationDaily = prefs.getBoolean("notifications_CB_timeNotificationDaily", false);
         if (timeCBNotificationDaily) {
-            Intent alarmReciverIntent = new Intent(context, AlarmReceiver.class);
-            alarmReciverIntent.putExtra("notificationType", "daily");
+            Intent alarmReceiverIntent = new Intent(context, AlarmReceiver.class);
+            alarmReceiverIntent.putExtra("notificationType", "daily");
 
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, alarmReciverIntent, PendingIntent.FLAG_IMMUTABLE);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, alarmReceiverIntent, PendingIntent.FLAG_IMMUTABLE);
 
             String timeNotificationDaily = prefs.getString("timePref_timeNotificationDaily", "00:00");
             String[] time = timeNotificationDaily.split(":");
@@ -56,6 +56,7 @@ public class HokUtils extends Activity {
             }
 
             ///////for notification now/////////////////////////////////////////////////////
+//            Toast.makeText(context,"setAlarm",Toast.LENGTH_LONG).show();
 //            Calendar alarmStart = Calendar.getInstance();
 //            alarmStart.add(Calendar.SECOND, 1);
 //            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, alarmStart.getTimeInMillis(), AlarmManager.INTERVAL_DAY , pendingIntent);
@@ -74,9 +75,9 @@ public class HokUtils extends Activity {
 
         boolean timeFridayCBNotificationDaily = prefs.getBoolean("notifications_CB_timeFridayNotification", false);
         if (timeFridayCBNotificationDaily) {
-            Intent alarmReciverIntent = new Intent(context, AlarmReceiver.class);
-            alarmReciverIntent.putExtra("notificationType", "friday");
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 2, alarmReciverIntent, PendingIntent.FLAG_IMMUTABLE);
+            Intent alarmReceiverIntent = new Intent(context, AlarmReceiver.class);
+            alarmReceiverIntent.putExtra("notificationType", "friday");
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 2, alarmReceiverIntent, PendingIntent.FLAG_IMMUTABLE);
 
 
             ZmanimCalendar zc = Utils.getZmanimCalendar(context, "HLPreferences");
