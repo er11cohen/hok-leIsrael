@@ -97,8 +97,21 @@ public class MainActivity extends Activity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && (timeCBNotificationDaily || timeFridayCBNotificationDaily)) {
             AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
             if (!alarmManager.canScheduleExactAlarms()) {
-                Toast.makeText(this, "canScheduleExactAlarms", Toast.LENGTH_LONG).show();
-                startActivityForResult(new Intent(android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM), 4);
+                ((TextView) new AlertDialog.Builder(this)
+                        .setTitle("צדיק תן לנו הרשאה")
+                        .setIcon(drawable.ic_input_add)
+                        .setMessage("על מנת שנוכל להציג את התזכורות אנא אשר 'הרשאת תזכורות'")
+                        .setPositiveButton("בשמחה",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,
+                                                        int which) {
+                                        dialog.cancel();
+                                        startActivityForResult(new Intent(android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM), 4);
+                                    }
+                                })
+                        .show().findViewById(android.R.id.message))
+                        .setMovementMethod(LinkMovementMethod.getInstance());
+
                 return;
             }
         }
@@ -176,7 +189,7 @@ public class MainActivity extends Activity {
                 }
                 break;
             case 4: // permission for SCHEDULE_EXACT_ALARM
-                this.callToAlarmReceiver();
+                callToAlarmReceiver();
                 break;
             default:
                 break;
