@@ -3,12 +3,15 @@ package com.eran.hokleisrael;
 import android.R.drawable;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Html;
@@ -88,6 +91,31 @@ public class MainActivity extends Activity {
     }
 
     private void callToAlarmReceiver() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        boolean timeCBNotificationDaily = prefs.getBoolean("notifications_CB_timeNotificationDaily", false);
+        boolean timeFridayCBNotificationDaily = prefs.getBoolean("notifications_CB_timeFridayNotification", false);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && (timeCBNotificationDaily || timeFridayCBNotificationDaily)) {
+            AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+            if (!alarmManager.canScheduleExactAlarms()) {
+                ((TextView) new AlertDialog.Builder(this)
+                        .setTitle("צדיק תן לנו הרשאה")
+                        .setIcon(drawable.ic_input_add)
+                        .setMessage("על מנת שנוכל להציג את התזכורות אנא אשר 'הרשאת תזכורות'")
+                        .setPositiveButton("בשמחה",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,
+                                                        int which) {
+                                        dialog.cancel();
+                                        startActivityForResult(new Intent(android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM), 4);
+                                    }
+                                })
+                        .show().findViewById(android.R.id.message))
+                        .setMovementMethod(LinkMovementMethod.getInstance());
+
+                return;
+            }
+        }
+
         HokUtils.setAlarm(getApplicationContext());
     }
 
@@ -125,10 +153,7 @@ public class MainActivity extends Activity {
     }
 
     public void LastLocation(View v) {
-        //if (!Utils.isPermissionWriteRequired(MainActivity.this, 1, true))
-        // {
         sendLocationToWebView("last");
-        // }
     }
 
     public void OpenSettings(View v) {
@@ -150,8 +175,6 @@ public class MainActivity extends Activity {
 
             case 2:/* from bookmarks */
                 if (data != null && data.getExtras().containsKey("bookmark")) {
-                    // Parash fileSelected = (Parash)
-                    // data.getSerializableExtra("fileSelected");
                     Parash bookmark = (Parash) data.getParcelableExtra("bookmark");
                     Intent intent = new Intent(getApplicationContext(),
                             WebActivity.class);
@@ -163,8 +186,10 @@ public class MainActivity extends Activity {
                 if (data != null && data.getExtras().containsKey("fileName")) {
                     String fileName = data.getStringExtra("fileName");
                     sendLocationToWebView(fileName);
-                    // Toast.makeText(this,data.getStringExtra("fileName"),Toast.LENGTH_LONG).show();
                 }
+                break;
+            case 4: // permission for SCHEDULE_EXACT_ALARM
+                callToAlarmReceiver();
                 break;
             default:
                 break;
@@ -296,10 +321,6 @@ public class MainActivity extends Activity {
                     {
                         Intent intent = new Intent(getApplicationContext(),
                                 WebActivity.class);
-                        // intent.putExtra("humashEn", "tishaBeav" );
-                        // intent.putExtra("parshEn", "tishaBeav");
-                        // intent.putExtra("parshHe", "תשעה באב");
-                        // intent.putExtra("day", dayOfWeek);
                         parash.setHumashEn("tishaBeav");
                         parash.setParshEn("tishaBeav");
                         parash.setParshHe("תשעה באב");
@@ -371,19 +392,13 @@ public class MainActivity extends Activity {
 
         intentCurrentDay = new Intent(getApplicationContext(),
                 WebActivity.class);
-        // intentCurrentDay.putExtra("parshEn", parash.getParshEn());
-        // intentCurrentDay.putExtra("humashEn", parash.getHumashEn());
-        // intentCurrentDay.putExtra("parshHe", parash.getParshHe());
-        // intentCurrentDay.putExtra("isCurrentDay", true);//for daily Limud
         parash.setIsCurrentDay(true);
         if (dayOfWeek == -1) // flag to open dialog
         {
-            // intentCurrentDay.putExtra("day", 6);
             parash.setDay(6);
 
             String message = Utils.ReadTxtFile("files/fridayPopup.txt",
                     getApplicationContext());
-            // chatzot = new StringBuffer(chatzot).reverse().toString();
             message = String.format(message, chatzot, alotHashchar);
 
             ((TextView) new AlertDialog.Builder(this)
