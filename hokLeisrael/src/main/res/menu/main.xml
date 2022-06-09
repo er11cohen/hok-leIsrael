@@ -1,13 +1,14 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-     <item android:id="@+id/menu_item_share"
+    <item
+        android:id="@+id/menu_item_share"
+        android:icon="@android:drawable/ic_menu_share"
+        android:showAsAction="ifRoom"
+        android:title="שיתוף" />
+
+    <item
+        android:id="@+id/menu_item_score"
+        android:icon="@android:drawable/btn_star_big_on"
         android:showAsAction="always"
-        android:title="Share"
-        android:actionProviderClass="android.widget.ShareActionProvider" />
-     
-      <item android:id="@+id/menu_item_score"
-          android:title="דרג אותנו" 
-          android:showAsAction="always"
-           android:icon="@android:drawable/btn_star_big_on" 
-          />
+        android:title="דרג אותנו" />
 </menu>

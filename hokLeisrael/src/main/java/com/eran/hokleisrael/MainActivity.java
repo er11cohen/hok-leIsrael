@@ -20,7 +20,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ShareActionProvider;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,7 +49,7 @@ public class MainActivity extends Activity {
     String chatzot;
     String alotHashchar;
     boolean fridayNotification;
-    WeakReference<Activity> WeakReferenceActivity;
+    WeakReference<Activity> weakReferenceActivity;
 
     @SuppressLint("NewApi")
     @Override
@@ -61,7 +60,7 @@ public class MainActivity extends Activity {
         PreferenceManager.setDefaultValues(this, R.xml.pref_general, false);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         HLPreferences = getSharedPreferences("HLPreferences", MODE_PRIVATE);
-        WeakReferenceActivity = new WeakReference<Activity>(this);
+        weakReferenceActivity = new WeakReference<Activity>(this);
 
         String version = HLPreferences.getString("version", "-1");
         if (!version.equals("1.8.8")) {
@@ -230,14 +229,14 @@ public class MainActivity extends Activity {
 
     public void OpenHelp(View v) {
 
-        Utils.alertDialogShow(WeakReferenceActivity, getApplicationContext(),
+        Utils.alertDialogShow(weakReferenceActivity, getApplicationContext(),
                 "עזרה", android.R.drawable.ic_menu_help, "files/help.txt",
                 "הבנתי", "זכה את הרבים", shareTextIntent);
 
     }
 
     public void OpenAbout(View v) {
-        Utils.alertDialogShow(WeakReferenceActivity, getApplicationContext(),
+        Utils.alertDialogShow(weakReferenceActivity, getApplicationContext(),
                 "אודות", android.R.drawable.ic_menu_info_details,
                 "files/about.txt", "אשריכם תזכו למצוות", "זכה את הרבים",
                 shareTextIntent);
@@ -478,22 +477,9 @@ public class MainActivity extends Activity {
         }
     }
 
-    @SuppressLint("NewApi")
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            getMenuInflater().inflate(R.menu.main, menu);
-            MenuItem item = menu.findItem(R.id.menu_item_share);
-            ShareActionProvider myShareActionProvider = (ShareActionProvider) item
-                    .getActionProvider();
-            Intent myIntent = new Intent();
-            myIntent.setAction(Intent.ACTION_SEND);
-            myIntent.putExtra(
-                    Intent.EXTRA_TEXT,
-                    "חוק לישראל - Hok Leisrael https://play.google.com/store/apps/details?id=com.eran.hokleisrael");
-            myIntent.setType("text/plain");
-            myShareActionProvider.setShareIntent(myIntent);
-        }
+        getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
@@ -503,6 +489,9 @@ public class MainActivity extends Activity {
         switch (item.getItemId()) {
             case R.id.menu_item_score:
                 scoreInGooglePlay();
+                break;
+            case R.id.menu_item_share:
+                Utils.shareApp(weakReferenceActivity, shareTextIntent);
                 break;
             default:
                 break;
