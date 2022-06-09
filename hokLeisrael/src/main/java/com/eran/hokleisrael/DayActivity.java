@@ -1,6 +1,5 @@
 package com.eran.hokleisrael;
 
-import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
@@ -11,35 +10,23 @@ import android.widget.Button;
 
 public class DayActivity extends Activity {
 
-    String parshHe;//,parshEn;
-    //String humashEn;
-    String dayHe;
+    String parshHe;
     int day;
     boolean weekly = false;
     Parash parash;
 
-    @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_day);
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
-            ActionBar actionBar = getActionBar();
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
         parash = (Parash) intent.getParcelableExtra("parash");
         parshHe = parash.getParshHe();
-        //parshEn = parash.getParshEn();
-        //humashEn = parash.getHumashEn();
         weekly = parash.getWeekly();
-
-//		parshHe = intent.getStringExtra("parshHe");
-//		parshEn = intent.getStringExtra("parshEn");
-//        humashEn = intent.getStringExtra("humashEn");
-//        weekly = intent.getBooleanExtra("weekly", false);
 
         setTitle(parshHe);
 
@@ -55,25 +42,12 @@ public class DayActivity extends Activity {
         }
     }
 
-	/*@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.day, menu);
-		return true;
-	}*/
-
     public void SelectDay(View v) {
-        //String title = parshHe + " " + ((Button) v).getText();
         day = Integer.parseInt((String) ((Button) v).getTag());
 
         Intent intent = new Intent(getApplicationContext(), WebActivity.class);
         parash.setDay(day);
-//	    	intent.putExtra("day", day);
-//	    	intent.putExtra("parshEn", parshEn);
-//	    	intent.putExtra("humashEn", humashEn);
-//	    	intent.putExtra("parshHe", parshHe);
         if (weekly) {
-            //intent.putExtra("weekly", true);
             parash.setWeekly(true);
         }
         intent.putExtra("parash", parash);

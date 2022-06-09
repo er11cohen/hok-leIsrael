@@ -247,18 +247,14 @@ public class Utils extends Activity {
                         }
                 );
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
-
-            WebView wv = (WebView) activity.findViewById(webView);
-            wv.setOnTouchListener(new OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    gs.onTouchEvent(event);
-                    return false;
-                }
-            });
-        }
-
+        WebView wv = (WebView) activity.findViewById(webView);
+        wv.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                gs.onTouchEvent(event);
+                return false;
+            }
+        });
     }
 
 

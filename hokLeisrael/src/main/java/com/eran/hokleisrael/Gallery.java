@@ -1,6 +1,5 @@
 package com.eran.hokleisrael;
 
-import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
@@ -28,16 +27,13 @@ public class Gallery extends Activity {
 
     LinearLayout myGallery;
 
-    @SuppressLint("NewApi")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
         String appName = "/HokLeisrael";
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
-            ActionBar actionBar = getActionBar();
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         myGallery = (LinearLayout) findViewById(R.id.mygallery);
         File path = Utils.getFilePath(getApplicationContext());
@@ -74,20 +70,13 @@ public class Gallery extends Activity {
     }
 
 
-    @SuppressLint("NewApi")
     View insertPhoto(String path, final String fileName) {
         int width, height;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB_MR2) {
-            Display display = getWindowManager().getDefaultDisplay();
-            Point size = new Point();
-            display.getSize(size);
-            width = size.x;
-            height = size.y;
-        } else {
-            Display display = getWindowManager().getDefaultDisplay();
-            width = display.getWidth();  // deprecated
-            height = display.getHeight();  // deprecated
-        }
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        width = size.x;
+        height = size.y;
 
         width -= 70;
         height -= 70;
@@ -96,12 +85,10 @@ public class Gallery extends Activity {
 
         ImageView imageView = new ImageView(getApplicationContext());
         imageView.setLayoutParams(new LayoutParams(width - 30, height - 30));
-        //imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         imageView.setImageBitmap(bm);
         imageView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(getApplicationContext(), fileName, Toast.LENGTH_LONG).show();
                 Intent i = getIntent();
                 i.putExtra("fileName", fileName);
                 setResult(RESULT_OK, i);

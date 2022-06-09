@@ -1,6 +1,5 @@
 package com.eran.hokleisrael;
 
-import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
@@ -32,17 +31,12 @@ public class Bookmarks extends Activity {
     Gson gson;
     ArrayAdapter<Parash> adapter;
 
-    @SuppressLint("NewApi")
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bookmarks);
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
-            ActionBar actionBar = getActionBar();
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
         lv = (ListView) findViewById(R.id.ListViewBookmarks);
 
         gson = new Gson();
@@ -97,14 +91,6 @@ public class Bookmarks extends Activity {
                     superActivityToast.setOnClickWrapper(onClickWrapper, bundle);
                     SuperActivityToast.cancelAllSuperActivityToasts();
                     superActivityToast.show();
-				/*} 
-            	catch (Exception e) 
-            	{
-            		e.printStackTrace();
-					Utils.appendLog(e.toString());
-					Toast.makeText(Bookmarks.this,"write to log",Toast.LENGTH_LONG).show();
-				}*/
-
 
                     return true;
                 }

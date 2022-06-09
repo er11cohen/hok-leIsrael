@@ -17,8 +17,8 @@ public class AppendixActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appendix);
-            ActionBar actionBar = getActionBar();
-            actionBar.setDisplayHomeAsUpEnabled(true);
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
         parash = new Parash();
     }
 
@@ -51,7 +51,6 @@ public class AppendixActivity extends Activity {
         parash.setWeekly(true);
         intent.putExtra("parash", parash);
         startActivity(intent);
-
     }
 
     public void selectOrhotHaim(View v) {
@@ -62,7 +61,6 @@ public class AppendixActivity extends Activity {
         parash.setWeekly(true);
         intent.putExtra("parash", parash);
         startActivity(intent);
-
     }
 
     public void selectHatzatilHakatan(View v) {
@@ -74,6 +72,5 @@ public class AppendixActivity extends Activity {
         parash.setParshHe("הצעטיל הקטן");
         intent.putExtra("parash", parash);
         startActivity(intent);
-
     }
 }

@@ -1,6 +1,5 @@
 package com.eran.hokleisrael;
 
-import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -28,17 +27,12 @@ import android.view.MenuItem;
  */
 public class SettingsActivity extends PreferenceActivity {
 
-
-    @SuppressLint("NewApi")
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
-            ActionBar actionBar = getActionBar();
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
         setupSimplePreferencesScreen();
     }
 
@@ -71,9 +65,7 @@ public class SettingsActivity extends PreferenceActivity {
         getPreferenceScreen().addPreference(fakeHeader);
         addPreferencesFromResource(R.xml.pref_notification);
         addPreferencesFromResource(R.xml.pref_time_picker);
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
-            addPreferencesFromResource(R.xml.pref_number_picker);
-        }
+        addPreferencesFromResource(R.xml.pref_number_picker);
 
 
         // Add 'notifications' preferences, and a corresponding header.
@@ -102,9 +94,7 @@ public class SettingsActivity extends PreferenceActivity {
 
         bindPreferenceSummaryToValue(findPreference("notifications_new_message_ringtone"));
         bindPreferenceSummaryToValue(findPreference("timePref_timeNotificationDaily"));
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
-            bindPreferenceSummaryToValue(findPreference("numberPickerPref_timeFridayBeforeNotification"));
-        }
+        bindPreferenceSummaryToValue(findPreference("numberPickerPref_timeFridayBeforeNotification"));
     }
 
 
