@@ -517,7 +517,7 @@ public class MainActivity extends Activity {
                 Uri.parse("https://play.google.com/store/apps/details?id=com.eran.hokleisrael"));
         startActivity(browserIntent);
 
-        String text = "צדיק אהבת את האפלקציה? דרג אותנו  5 כוכבים וטול חלק בזיכוי הרבים.";
+        String text = "צדיק דרג אותנו 5 כוכבים וטול חלק בזיכוי הרבים.";
         Toast.makeText(this, text, Toast.LENGTH_LONG).show();
     }
 
