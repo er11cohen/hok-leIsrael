@@ -15,6 +15,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.service.notification.StatusBarNotification;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -26,6 +27,9 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class HokUtils extends Activity {
+
+    private final static int DALY_ID = 0;
+    private final static int FRIDAY_ID = 1;
 
     public static void setAlarm(Context context) {
         //Toast.makeText(context,"setAlarm",Toast.LENGTH_LONG).show();
@@ -56,13 +60,13 @@ public class HokUtils extends Activity {
             }
 
             ///////for notification now/////////////////////////////////////////////////////
-//            Toast.makeText(context,"setAlarm",Toast.LENGTH_LONG).show();
+//            android.widget.Toast.makeText(context, "setAlarm", android.widget.Toast.LENGTH_LONG).show();
 //            Calendar alarmStart = Calendar.getInstance();
-//            alarmStart.add(Calendar.SECOND, 1);
-//            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, alarmStart.getTimeInMillis(), AlarmManager.INTERVAL_DAY , pendingIntent);
+//            alarmStart.add(Calendar.SECOND, 10);
+//            setAlarmTime(alarmManager, alarmStart, pendingIntent);
             ///////
 
-            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, alarmStartTime.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+            setAlarmTime(alarmManager, alarmStartTime, pendingIntent);
 
         } else {
             //cancel daily notification
@@ -105,8 +109,7 @@ public class HokUtils extends Activity {
                 hatzotCal = calcHatzotCalendar(6, zc, prefs);
             }
 
-
-            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, hatzotCal.getTimeInMillis(), 604800000/*weekly*/, pendingIntent);
+            setAlarmTime(alarmManager, hatzotCal, pendingIntent);
             Log.i("hatzotCal", hatzotCal.getTime().toString());
             //Toast.makeText(context,"hatzotCal:  " + hatzotCal.getTime().toString(),Toast.LENGTH_LONG).show();
         } else {
@@ -117,6 +120,18 @@ public class HokUtils extends Activity {
             alarmManager.cancel(pendingFridayCancelIntent);
         }
 
+    }
+
+    private static void setAlarmTime(AlarmManager alarmManager, Calendar calendar, PendingIntent pendingIntent) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+//            AlarmManager.AlarmClockInfo ac = new AlarmManager.AlarmClockInfo(calendar.getTimeInMillis(), pendingIntent);
+//            alarmManager.setAlarmClock(ac, pendingIntent);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+        } else {
+            alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+        }
     }
 
     private static Calendar calcHatzotCalendar(int dayToAdd, ZmanimCalendar zc,
@@ -209,16 +224,26 @@ public class HokUtils extends Activity {
 
         Intent intent = new Intent(context, MainActivity.class);
         String showNotification = "צדיק הגיע זמן הלימוד היומי";
-        if (notificationKind.equals("friday")) {
+        int notifyID = DALY_ID;
+
+        if (notificationKind != null && notificationKind.equals("friday")) {
+            notifyID = FRIDAY_ID;
             showNotification = "צדיק הגיע זמן לימוד ליל שישי";
             intent.putExtra("fromNotification", "friday");
         }
 
-
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
-        final int notifyID = 1;
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        // for fix bug friday notification show twice
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            StatusBarNotification[] activeNotifications = notificationManager.getActiveNotifications();
+            if (activeNotifications.length > 0 && activeNotifications[0].getId() == FRIDAY_ID) {
+                return;
+            }
+        }
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             SharedPreferences HLPreferences = context.getSharedPreferences("HLPreferences", MODE_PRIVATE);

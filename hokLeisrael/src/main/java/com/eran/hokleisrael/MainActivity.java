@@ -13,7 +13,9 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.Menu;
@@ -93,29 +95,61 @@ public class MainActivity extends Activity {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         boolean timeCBNotificationDaily = prefs.getBoolean("notifications_CB_timeNotificationDaily", false);
         boolean timeFridayCBNotificationDaily = prefs.getBoolean("notifications_CB_timeFridayNotification", false);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && (timeCBNotificationDaily || timeFridayCBNotificationDaily)) {
-            AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-            if (!alarmManager.canScheduleExactAlarms()) {
-                ((TextView) new AlertDialog.Builder(this)
-                        .setTitle("צדיק תן לנו הרשאה")
-                        .setIcon(drawable.ic_input_add)
-                        .setMessage("על מנת שנוכל להציג את התזכורות אנא אשר 'הרשאת תזכורות'")
-                        .setPositiveButton("בשמחה",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog,
-                                                        int which) {
-                                        dialog.cancel();
-                                        startActivityForResult(new Intent(android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM), 4);
-                                    }
-                                })
-                        .show().findViewById(android.R.id.message))
-                        .setMovementMethod(LinkMovementMethod.getInstance());
+        if (timeCBNotificationDaily || timeFridayCBNotificationDaily) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                checkExactAlarmsPermission();
+            }
 
-                return;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                ignoringBatteryOptimizations();
             }
         }
 
         HokUtils.setAlarm(getApplicationContext());
+    }
+
+    @SuppressLint("NewApi")
+    private void checkExactAlarmsPermission() {
+        AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        if (!alarmManager.canScheduleExactAlarms()) {
+            ((TextView) new AlertDialog.Builder(this)
+                    .setTitle("צדיק תן לנו הרשאה")
+                    .setIcon(drawable.ic_input_add)
+                    .setMessage("על מנת שנוכל להציג את התזכורות תמיד בזמן אנא אשר 'הרשאת תזכורות'")
+                    .setPositiveButton("בשמחה",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,
+                                                    int which) {
+                                    dialog.cancel();
+                                    startActivityForResult(new Intent(android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM), 4);
+                                }
+                            })
+                    .setNegativeButton("לא כעת", null)
+                    .show().findViewById(android.R.id.message))
+                    .setMovementMethod(LinkMovementMethod.getInstance());
+        }
+    }
+
+    @SuppressLint("NewApi")
+    private void ignoringBatteryOptimizations() {
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        if (!pm.isIgnoringBatteryOptimizations(getPackageName())) {
+            ((TextView) new AlertDialog.Builder(this)
+                    .setTitle("צדיק תן לנו הרשאה")
+                    .setIcon(drawable.ic_input_add)
+                    .setMessage("צדיק ביקשת לקבל תזכורות יומית, על מנת שהתזכורות תמיד יקפצו בזמן ולא יאחרו אנא אשר לנו את ההרשאה הבאה")
+                    .setPositiveButton("בשמחה",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,
+                                                    int which) {
+                                    dialog.cancel();
+                                    startActivity(new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS, Uri.parse("package:" + getPackageName())));
+                                }
+                            })
+                    .setNegativeButton("לא כעת", null)
+                    .show().findViewById(android.R.id.message))
+                    .setMovementMethod(LinkMovementMethod.getInstance());
+        }
     }
 
     @Override
