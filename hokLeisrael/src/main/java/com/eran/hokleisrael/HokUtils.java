@@ -44,7 +44,7 @@ public class HokUtils extends Activity {
             Intent alarmReceiverIntent = new Intent(context, AlarmReceiver.class);
             alarmReceiverIntent.putExtra("notificationType", "daily");
 
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, alarmReceiverIntent, PendingIntent.FLAG_IMMUTABLE);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, alarmReceiverIntent, getPendingIntentFlag());
 
             String timeNotificationDaily = prefs.getString("timePref_timeNotificationDaily", "00:00");
             String[] time = timeNotificationDaily.split(":");
@@ -72,7 +72,7 @@ public class HokUtils extends Activity {
             //cancel daily notification
 
             Intent alarmReciverDailyCancelIntent = new Intent(context, AlarmReceiver.class);
-            PendingIntent pendingCancelIntent = PendingIntent.getBroadcast(context, 0, alarmReciverDailyCancelIntent, PendingIntent.FLAG_IMMUTABLE);
+            PendingIntent pendingCancelIntent = PendingIntent.getBroadcast(context, 0, alarmReciverDailyCancelIntent, getPendingIntentFlag());
             alarmManager.cancel(pendingCancelIntent);
         }
 
@@ -81,7 +81,7 @@ public class HokUtils extends Activity {
         if (timeFridayCBNotificationDaily) {
             Intent alarmReceiverIntent = new Intent(context, AlarmReceiver.class);
             alarmReceiverIntent.putExtra("notificationType", "friday");
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 2, alarmReceiverIntent, PendingIntent.FLAG_IMMUTABLE);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 2, alarmReceiverIntent, getPendingIntentFlag());
 
 
             ZmanimCalendar zc = Utils.getZmanimCalendar(context, "HLPreferences");
@@ -109,6 +109,11 @@ public class HokUtils extends Activity {
                 hatzotCal = calcHatzotCalendar(6, zc, prefs);
             }
 
+//            android.widget.Toast.makeText(context, "setAlarmFriday", android.widget.Toast.LENGTH_LONG).show();
+//            Calendar alarmStart = Calendar.getInstance();
+//            alarmStart.add(Calendar.SECOND, 10);
+//            setAlarmTime(alarmManager, alarmStart, pendingIntent);
+
             setAlarmTime(alarmManager, hatzotCal, pendingIntent);
             Log.i("hatzotCal", hatzotCal.getTime().toString());
             //Toast.makeText(context,"hatzotCal:  " + hatzotCal.getTime().toString(),Toast.LENGTH_LONG).show();
@@ -116,10 +121,18 @@ public class HokUtils extends Activity {
             //cancel friday notification
 
             Intent alarmReciverFridayCancelIntent = new Intent(context, AlarmReceiver.class);
-            PendingIntent pendingFridayCancelIntent = PendingIntent.getBroadcast(context, 2, alarmReciverFridayCancelIntent, PendingIntent.FLAG_IMMUTABLE);
+            PendingIntent pendingFridayCancelIntent = PendingIntent.getBroadcast(context, 2, alarmReciverFridayCancelIntent, getPendingIntentFlag());
             alarmManager.cancel(pendingFridayCancelIntent);
         }
 
+    }
+
+    private static int getPendingIntentFlag() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            return PendingIntent.FLAG_UPDATE_CURRENT;
+        }
+
+        return PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE;
     }
 
     private static void setAlarmTime(AlarmManager alarmManager, Calendar calendar, PendingIntent pendingIntent) {
@@ -233,7 +246,7 @@ public class HokUtils extends Activity {
         }
 
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, getPendingIntentFlag());
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         // for fix bug friday notification show twice
