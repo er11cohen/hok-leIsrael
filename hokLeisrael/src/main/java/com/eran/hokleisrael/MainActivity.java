@@ -96,9 +96,9 @@ public class MainActivity extends Activity {
         boolean timeCBNotificationDaily = prefs.getBoolean("notifications_CB_timeNotificationDaily", false);
         boolean timeFridayCBNotificationDaily = prefs.getBoolean("notifications_CB_timeFridayNotification", false);
         if (timeCBNotificationDaily || timeFridayCBNotificationDaily) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                checkExactAlarmsPermission();
-            }
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+//                checkExactAlarmsPermission();
+//            }
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 ignoringBatteryOptimizations();
@@ -221,9 +221,9 @@ public class MainActivity extends Activity {
                     sendLocationToWebView(fileName);
                 }
                 break;
-            case 4: // permission for SCHEDULE_EXACT_ALARM
-                callToAlarmReceiver();
-                break;
+//            case 4: // permission for SCHEDULE_EXACT_ALARM
+//                callToAlarmReceiver();
+//                break;
             default:
                 break;
         }
