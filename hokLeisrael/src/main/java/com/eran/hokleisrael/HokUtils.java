@@ -185,7 +185,9 @@ public class HokUtils extends Activity {
         String sound = prefs.getString("notifications_new_message_ringtone", null);
         boolean vibratePref = prefs.getBoolean("notifications_new_message_vibrate", false);
 
-        if (!lastSoundNotification.equals(sound) || vibratePref != lastVibrateNotification) {
+        NotificationChannel mChannel = notificationManager.getNotificationChannel(notificationId);
+
+        if (mChannel == null || !lastSoundNotification.equals(sound) || vibratePref != lastVibrateNotification) {
             if (notificationId != null) {
                 notificationManager.deleteNotificationChannel(notificationId);
             }
@@ -202,7 +204,6 @@ public class HokUtils extends Activity {
                 vibrate = new long[]{1000, 1000, 1000};
             }
 
-            NotificationChannel mChannel = notificationManager.getNotificationChannel(notificationId);
             CharSequence name = context.getString(R.string.app_name);// The user-visible name of the channel.
             int importance = NotificationManager.IMPORTANCE_HIGH;
             mChannel = new NotificationChannel(notificationId, name, importance);
