@@ -475,8 +475,8 @@ public class Utils extends Activity {
         if (isMarshmallowPlusDevice()) {
             String permission = "android.permission.WRITE_EXTERNAL_STORAGE";
             String message = "צדיק, על מנת שתוכל לשחזר תמיד את היסטוריית המיקומים שלך, עליך לאשר את 'הרשאת הגישה לקבצים'";
-            String settingsMassege = "צדיק, על מנת שתוכל לשחזר תמיד את היסטוריית המיקומים שלך, עליך ללחוץ על הגדרות > הרשאות ולהדליק את ההרשאות";
-            return isPermissionRequestRequired(activity, permission, requestCode, message, settingsMassege, showDialog);
+            String settingsMessage = "צדיק, על מנת שתוכל לשחזר תמיד את היסטוריית המיקומים שלך, עליך ללחוץ על הגדרות > הרשאות ולהדליק את ההרשאות";
+            return isPermissionRequestRequired(activity, permission, requestCode, message, settingsMessage, showDialog);
         }
         return false;
     }
@@ -485,8 +485,8 @@ public class Utils extends Activity {
     public static boolean isPermissionLocationRequired(Activity activity, int requestCode, boolean showDialog) {
         if (isMarshmallowPlusDevice()) {
             String message = "צדיק, על מנת שנוכל לחשב את הלימוד היומי, עליך לאשר את 'הרשאת מיקום'  (חישוב הלימוד היומי תלוי במיקום שלך)";
-            String settingsMassege = "צדיק, על מנת שנוכל לחשב את הלימוד היומי, עליך ללחוץ על הגדרות > הרשאות ולהדליק את ההרשאות (חישוב הלימוד היומי תלוי במיקום שלך)";
-            return isPermissionRequestRequired(activity, Location_Permission, requestCode, message, settingsMassege, showDialog);
+            String settingsMessage = "צדיק, על מנת שנוכל לחשב את הלימוד היומי, עליך ללחוץ על הגדרות > הרשאות ולאשר את 'הרשאת מיקום' (חישוב הלימוד היומי תלוי במיקום שלך)";
+            return isPermissionRequestRequired(activity, Location_Permission, requestCode, message, settingsMessage, showDialog);
         }
         return false;
     }
