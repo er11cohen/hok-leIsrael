@@ -65,7 +65,7 @@ public class MainActivity extends Activity {
         weakReferenceActivity = new WeakReference<Activity>(this);
 
         String version = HLPreferences.getString("version", "-1");
-        if (!version.equals("1.8.8")) {
+        if (!version.equals("1.8.9")) {
             String message = Utils.ReadTxtFile("files/newVersion.txt",
                     getApplicationContext());
             ((TextView) new AlertDialog.Builder(this)
@@ -83,7 +83,7 @@ public class MainActivity extends Activity {
                     .setMovementMethod(LinkMovementMethod.getInstance());
 
             SharedPreferences.Editor editor = HLPreferences.edit();
-            editor.putString("version", "1.8.8");
+            editor.putString("version", "1.8.9");
             editor.commit();
         }
 
@@ -137,7 +137,7 @@ public class MainActivity extends Activity {
             ((TextView) new AlertDialog.Builder(this)
                     .setTitle("צדיק תן לנו הרשאה")
                     .setIcon(drawable.ic_input_add)
-                    .setMessage("צדיק ביקשת לקבל תזכורות יומית, על מנת שהתזכורות תמיד יקפצו בזמן ולא יאחרו אנא אשר לנו את ההרשאה הבאה")
+                    .setMessage("צדיק ביקשת לקבל תזכורת יומית, על מנת שהתזכורות תמיד יקפצו בזמן בגרסאות האנדרואיד החדשות ולא יאחרו אנא אשר לנו את ההרשאה הבאה")
                     .setPositiveButton("בשמחה",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog,
