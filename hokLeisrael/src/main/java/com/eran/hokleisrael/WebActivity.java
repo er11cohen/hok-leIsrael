@@ -1,17 +1,6 @@
 package com.eran.hokleisrael;
 
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.lang.ref.WeakReference;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
@@ -29,11 +18,9 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -46,8 +33,17 @@ import com.eran.utils.Utils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.lang.ref.WeakReference;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-//Toast.makeText(WebActivity.this,Integer.toString(scrollY),Toast.LENGTH_LONG).show();
 public class WebActivity extends Activity {
 
     private static final int ON_DO_NOT_DISTURB_CALLBACK_CODE = 1;
@@ -82,24 +78,12 @@ public class WebActivity extends Activity {
     String appName = "/HokLeisrael";
     boolean pageReady = false;
     String queryAliya = null;
-	/*@Override //not need for rotate
-	public void onConfigurationChanged(Configuration newConfig){        
-	    super.onConfigurationChanged(newConfig);
-	}*/
 
-    @SuppressLint("NewApi")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         fullScreen = defaultSharedPreferences.getBoolean("CBFullScreen", false);
-        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
-            timeToLoad = 3200;
-            if (fullScreen) {
-                this.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-                this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            }
-        }
         setContentView(R.layout.activity_web);
 
         am = (AudioManager) getBaseContext().getSystemService(Context.AUDIO_SERVICE);
@@ -107,13 +91,11 @@ public class WebActivity extends Activity {
 
         HLPreferences = getSharedPreferences("HLPreferences", MODE_PRIVATE);
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
-            actionBar = getActionBar();
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            if (fullScreen) {
-                // actionBar.hide();
-                getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            }
+        actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        if (fullScreen) {
+            // actionBar.hide();
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
 
         boolean keepScreenOn = defaultSharedPreferences.getBoolean("CBKeepScreenOn", false);
@@ -146,19 +128,14 @@ public class WebActivity extends Activity {
         wv = (WebView) findViewById(R.id.webViewHL);
         progressBar = (ProgressBar) findViewById(R.id.progressBarHL);
         wvSetting = wv.getSettings();
-        //registerForContextMenu(wv);
         registerForContextMenu(progressBar);
 
         wvSetting.setCacheMode(WebSettings.LOAD_NO_CACHE);
         wvSetting.setJavaScriptEnabled(true);
-        //wv.setWebChromeClient(new WebChromeClient());
-        //wvSetting.setAllowFileAccess(false);
         LoadWebView();
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
-            WeakReference<Activity> WeakReferenceActivity = new WeakReference<Activity>(this);
-            Utils.toggleFullScreen(WeakReferenceActivity, getApplicationContext(), R.id.webViewHL, actionBar, fullScreen);
-        }
+        WeakReference<Activity> WeakReferenceActivity = new WeakReference<Activity>(this);
+        Utils.toggleFullScreen(WeakReferenceActivity, getApplicationContext(), R.id.webViewHL, actionBar, fullScreen);
 
         if (isCurrentDay) //for move between currentDay and appendix
         {
@@ -169,7 +146,6 @@ public class WebActivity extends Activity {
             currentDayMap.put("humashEn", humashEn);
         }
 
-        WeakReference<Activity> WeakReferenceActivity = new WeakReference<Activity>(this);
         Utils.firstDoubleClickInfo(defaultSharedPreferences, WeakReferenceActivity);
     }
 
@@ -219,7 +195,6 @@ public class WebActivity extends Activity {
                 if (scrollY > 0 || queryAliya != null) {
                     new Handler().postDelayed(new Runnable() {
                         public void run() {
-                            //Toast.makeText(WebActivity.this,"timeToLoad " +Integer.toString(timeToLoad)+ "  scrollY " +Integer.toString(scrollY),Toast.LENGTH_LONG).show();
                             ChangeWebViewBySettings();
                             if (queryAliya != null) {
                                 findAliyot(queryAliya);
@@ -242,59 +217,35 @@ public class WebActivity extends Activity {
     }
 
     private void ChangeWebViewBySettings() {
-        //changing the option menu here cause to crush on old phone
-        if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.HONEYCOMB) {
-            MenuItem nextDay = optionsMenu.findItem(R.id.nextDay);
-            MenuItem previousDay = optionsMenu.findItem(R.id.previousDay);
-            if (day == -1 || humashEn.equals(tishaBeavStr)) {
-                nextDay.setVisible(false);
-                previousDay.setVisible(false);
-            } else {
-                nextDay.setVisible(true);
-                previousDay.setVisible(true);
-            }
-
-
-            MenuItem studyActionBar = optionsMenu.findItem(R.id.selectStudyActionBar);
-            //MenuItem study = optionsMenu.findItem(R.id.selectStudy);
-            MenuItem aliya = optionsMenu.findItem(R.id.selectAliya);
-            MenuItem dailyAliya = optionsMenu.findItem(R.id.dailyAliya);
-
-            if (isHokLeisrael()) {
-                aliya.setVisible(true);
-                dailyAliya.setVisible(true);
-            } else {
-                aliya.setVisible(false);
-                dailyAliya.setVisible(false);
-            }
-            if (weekly || parshEn.equals("hatzatilHakatan")) {
-                studyActionBar.setVisible(false);
-                //study.setVisible(false);
-            } else {
-                studyActionBar.setVisible(true);
-                //study.setVisible(true);
-            }
+        MenuItem nextDay = optionsMenu.findItem(R.id.nextDay);
+        MenuItem previousDay = optionsMenu.findItem(R.id.previousDay);
+        if (day == -1 || humashEn.equals(tishaBeavStr)) {
+            nextDay.setVisible(false);
+            previousDay.setVisible(false);
+        } else {
+            nextDay.setVisible(true);
+            previousDay.setVisible(true);
         }
-		
-		
-		
-		/*if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) // in order to not show in click on menu twice for old device
-		  {
-			studyActionBar.setVisible(false);
-		  }*/
 
-        //MenuItem nightModeItem = optionsMenu.findItem(R.id.nightMode);
+
+        MenuItem studyActionBar = optionsMenu.findItem(R.id.selectStudyActionBar);
+        MenuItem aliya = optionsMenu.findItem(R.id.selectAliya);
+        MenuItem dailyAliya = optionsMenu.findItem(R.id.dailyAliya);
+
+        if (isHokLeisrael()) {
+            aliya.setVisible(true);
+            dailyAliya.setVisible(true);
+        } else {
+            aliya.setVisible(false);
+            dailyAliya.setVisible(false);
+        }
+        if (weekly || parshEn.equals("hatzatilHakatan")) {
+            studyActionBar.setVisible(false);
+        } else {
+            studyActionBar.setVisible(true);
+        }
+
         Utils.NightMode(false, HLPreferences, wv, nightModeItem);
-//        if (RemoveNikud()) {
-//            Utils.loadJS(wv, "document.body.innerHTML=document.body.innerHTML.replace(/[\u0500-\u05CF]/g, \"\")");
-//        }
-//        if (AlignText()) {
-//            Utils.loadJS(wv, "document.body.innerHTML=document.body.innerHTML.replace('justify', 'right')");
-//        }
-
-        //String font = "var link = document.createElement('style'); link.type = 'text/css';  link.rel = 'stylesheet';  link.innerHTML= '@font-face {font-family:eran; src: url(\"file:///android_asset/fonts/Alef.ttf\");} body{font-family: eran;}'; document.getElementsByTagName('head')[0].appendChild(link)";
-        //wv.loadUrl("javascript:" + font);
-
     }
 
     private void nextDay() {
@@ -320,13 +271,8 @@ public class WebActivity extends Activity {
         nightModeItem = menu.findItem(R.id.nightMode);
         optionsMenu = menu;
 
-        if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.HONEYCOMB) {
-            //MenuItem addBookmarks = optionsMenu.findItem(R.id.addBookmarksActionBar);
-            //addBookmarks.setVisible(true);
-
-            if (isCurrentDay) {
-                optionsMenu.findItem(R.id.dailyAppendix).setVisible(true);
-            }
+        if (isCurrentDay) {
+            optionsMenu.findItem(R.id.dailyAppendix).setVisible(true);
         }
 
 
@@ -379,7 +325,6 @@ public class WebActivity extends Activity {
                 previousDay();
                 break;
             case R.id.nightMode:
-                //MenuItem nightModeItem = optionsMenu.findItem(R.id.nightMode);
                 Utils.NightMode(true, HLPreferences, wv, nightModeItem);
                 break;
             case R.id.zoomUp:
@@ -392,7 +337,6 @@ public class WebActivity extends Activity {
                 openDailyAppendixMenu();
                 break;
             case R.id.addBookmarks:
-                //case R.id.addBookmarksActionBar:
                 saveBookmarks();
                 break;
             case R.id.voiceHokLeisrael:
@@ -404,15 +348,7 @@ public class WebActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
-	 
-	/*@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		LoadWebView();
-	}*/
 
-
-    @SuppressLint("NewApi")
     @Override
     protected void onResume() {
         super.onResume();//Always call the superclass method first
@@ -433,8 +369,6 @@ public class WebActivity extends Activity {
     }
 
     private void saveLastLocation() {
-        // getBaseContext().getExternalFilesDir(null)
-        //  if (!Utils.isPermissionWriteRequired(WebActivity.this, 0, false)) {
         File path = Utils.getFilePath(getApplicationContext());
         File folder = new File(path + appName);
         boolean success = true;
@@ -511,30 +445,14 @@ public class WebActivity extends Activity {
                 editor.commit();
 
             } catch (Exception e) {
-                // e.printStackTrace();
             }
         }
-        //  }
     }
-
-
-//    private boolean AlignText() {
-//        boolean alignText = defaultSharedPreferences.getBoolean("CBAlignText", false);
-//        //Toast.makeText(WebActivity.this,Boolean.toString(alignText) + " CBAlignText",Toast.LENGTH_LONG).show();
-//        return alignText;
-//    }
-//
-//    private boolean RemoveNikud() {
-//        boolean removeNikud = defaultSharedPreferences.getBoolean("CBRemoveNikud", false);
-//        //Toast.makeText(WebActivity.this,Boolean.toString(removeNikud) + " CBRemoveNikud",Toast.LENGTH_LONG).show();
-//        return removeNikud;
-//    }
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         scrollY = -1;// in order to prevent jump to this in "onPageFinished" function
         menu.setHeaderTitle("בחר לימוד");
-        //menu.setHeaderIcon(drawable.nikud);
         if (!humashEn.contains("appendix")) {
             if (day >= 1 && day <= 5) {
                 menu.add(0, 1, 0, "התחלה");
@@ -588,7 +506,6 @@ public class WebActivity extends Activity {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        //Toast.makeText(WebActivity.this,item.getTitle(),Toast.LENGTH_LONG).show();
         String hash = null;
         switch (item.getItemId()) {
             case 1:
@@ -682,8 +599,6 @@ public class WebActivity extends Activity {
     }
 
     private void dailyAppendixMenuSelected(int index) {
-        //daysHebrew = 	   {"1יום ראשון","יום שני2","יום שלישי3","יום רביעי4","5יום חמישי","ליל שישי6","יום שישי7"};
-        //daysHebrewRegular = {"יום ראשון", "יום שני",  "יום שלישי","יום רביעי" ,"יום חמישי", "יום שישי", "יום שבת"};
         if (isCurrentDay && (index == 2 || index == 3)) {//move from daily(Hok leisrael) to weekly(OrhotHaim or Mamadot)
             if (day == 7) {
                 day = 6;
@@ -755,7 +670,6 @@ public class WebActivity extends Activity {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int i) {
                                 aliyaMenuSelected(i + 1, aliyotArr[i]);
-                              //  Toast.makeText(getApplicationContext(),Integer.toString(i),Toast.LENGTH_LONG).show();
                             }
                         })
                 .show();
@@ -833,8 +747,6 @@ public class WebActivity extends Activity {
         });
     }
 
-
-    @SuppressLint("NewApi")
     @Override
     public void onBackPressed() {
         wv.clearFocus();//for close pop-up of copy, select etc.
