@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -65,7 +64,7 @@ public class MainActivity extends Activity {
         weakReferenceActivity = new WeakReference<Activity>(this);
 
         String version = HLPreferences.getString("version", "-1");
-        if (!version.equals("1.8.9")) {
+        if (!version.equals("1.9.1")) {
             String message = Utils.ReadTxtFile("files/newVersion.txt",
                     getApplicationContext());
             ((TextView) new AlertDialog.Builder(this)
@@ -83,7 +82,7 @@ public class MainActivity extends Activity {
                     .setMovementMethod(LinkMovementMethod.getInstance());
 
             SharedPreferences.Editor editor = HLPreferences.edit();
-            editor.putString("version", "1.8.9");
+            editor.putString("version", "1.9.1");
             editor.commit();
         }
 
@@ -96,13 +95,14 @@ public class MainActivity extends Activity {
         boolean timeCBNotificationDaily = prefs.getBoolean("notifications_CB_timeNotificationDaily", false);
         boolean timeFridayCBNotificationDaily = prefs.getBoolean("notifications_CB_timeFridayNotification", false);
         if (timeCBNotificationDaily || timeFridayCBNotificationDaily) {
+            // ask for notification permission
+            if(!Utils.isPermissionNotificationRequired(MainActivity.this, 1, true)) {
+                ignoringBatteryOptimizations();
+            }
+
 //            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
 //                checkExactAlarmsPermission();
 //            }
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                ignoringBatteryOptimizations();
-            }
         }
 
         HokUtils.setAlarm(getApplicationContext());
@@ -132,12 +132,16 @@ public class MainActivity extends Activity {
 
     @SuppressLint("NewApi")
     private void ignoringBatteryOptimizations() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            return;
+        }
+
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         if (!pm.isIgnoringBatteryOptimizations(getPackageName())) {
             ((TextView) new AlertDialog.Builder(this)
                     .setTitle("צדיק תן לנו הרשאה")
                     .setIcon(drawable.ic_input_add)
-                    .setMessage("צדיק ביקשת לקבל תזכורת יומית, על מנת שהתזכורות תמיד יקפצו בזמן בגרסאות האנדרואיד החדשות ולא יאחרו אנא אשר לנו את ההרשאה הבאה")
+                    .setMessage("צדיק ביקשת לקבל תזכורות יומיות, על מנת שהתזכורות תמיד יקפצו בזמן בגרסאות האנדרואיד החדשות ולא יאחרו אנא אשר את ההרשאה הבאה")
                     .setPositiveButton("בשמחה",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog,
@@ -616,11 +620,8 @@ public class MainActivity extends Activity {
     }
 
     public void openHistory(View v) {
-//		if (!Utils.isPermissionWriteRequired(MainActivity.this, 2, true))
-//		{
         Intent intent = new Intent(getApplicationContext(), Gallery.class);
         startActivityForResult(intent, 3);
-//		}
     }
 
     @SuppressLint("NewApi")
@@ -632,16 +633,18 @@ public class MainActivity extends Activity {
             default:
                 for (int i = 0; i < permissions.length; i++) {
                     String permission = permissions[i];
-                    int grantResult = grantResults[i];
+//                    int grantResult = grantResults[i];
+//                    if (PackageManager.PERMISSION_GRANTED == grantResult) {
+//                                Toast.makeText(this,"PERMISSION GRANTED",Toast.LENGTH_LONG).show();
+//                            }
                     switch (permission) {
-                        case "android.permission.WRITE_EXTERNAL_STORAGE":
-                            Utils.firstTimeAskedPermission(MainActivity.this, "android.permission.WRITE_EXTERNAL_STORAGE");
-                            if (PackageManager.PERMISSION_GRANTED == grantResult) {
-                                //Toast.makeText(this,"PERMISSION GRANTED",Toast.LENGTH_LONG).show();
-                            }
+                        case Utils.Location_Permission:
+                            Utils.firstTimeAskedPermission(MainActivity.this, Utils.Location_Permission);
+                            callToAlarmReceiver();
                             break;
-                        case "android.permission.ACCESS_COARSE_LOCATION":
-                            Utils.firstTimeAskedPermission(MainActivity.this, "android.permission.ACCESS_COARSE_LOCATION");
+                        case Utils.Notification_Permission:
+                            Utils.firstTimeAskedPermission(MainActivity.this, Utils.Notification_Permission);
+                            ignoringBatteryOptimizations();
                             break;
                     }
                 }

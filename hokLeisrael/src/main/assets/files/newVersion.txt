@@ -1,6 +1,6 @@
 ﻿
-<b> גרסה 1.8.9 </b><br><br>
-בוצעה התאמה לאנדרואיד 12<br><br>
+<b> גרסה 1.9.1 </b><br><br>
+בוצעה התאמה לאנדרואיד 13<br><br>
 
 העלנו אפלקציה חדשה לציבור <br>
 <a href="https://play.google.com/store/apps/details?id=com.eran.bircatlevana" >תזכורת לברכת (קידוש) הלבנה</a> <br>

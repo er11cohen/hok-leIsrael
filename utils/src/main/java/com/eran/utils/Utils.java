@@ -60,7 +60,8 @@ public class Utils extends Activity {
     public static final String androidOS = Build.VERSION.RELEASE;
     public static final String phonemModel = Build.MODEL;
     public static Boolean utilFullScreen;
-    static final String Location_Permission = "android.permission.ACCESS_COARSE_LOCATION";
+    public static final String Location_Permission = "android.permission.ACCESS_COARSE_LOCATION";
+    public static final String Notification_Permission = "android.permission.POST_NOTIFICATIONS";
 
     public static String getVersionName(Context myContext) {
         String versionName = "-1";
@@ -471,22 +472,21 @@ public class Utils extends Activity {
     }
 
     @SuppressLint("NewApi")
-    public static boolean isPermissionWriteRequired(Activity activity, int requestCode, boolean showDialog) {
-        if (isMarshmallowPlusDevice()) {
-            String permission = "android.permission.WRITE_EXTERNAL_STORAGE";
-            String message = "צדיק, על מנת שתוכל לשחזר תמיד את היסטוריית המיקומים שלך, עליך לאשר את 'הרשאת הגישה לקבצים'";
-            String settingsMessage = "צדיק, על מנת שתוכל לשחזר תמיד את היסטוריית המיקומים שלך, עליך ללחוץ על הגדרות > הרשאות ולהדליק את ההרשאות";
-            return isPermissionRequestRequired(activity, permission, requestCode, message, settingsMessage, showDialog);
-        }
-        return false;
-    }
-
-    @SuppressLint("NewApi")
     public static boolean isPermissionLocationRequired(Activity activity, int requestCode, boolean showDialog) {
         if (isMarshmallowPlusDevice()) {
             String message = "צדיק, על מנת שנוכל לחשב את הלימוד היומי, עליך לאשר את 'הרשאת מיקום'  (חישוב הלימוד היומי תלוי במיקום שלך)";
             String settingsMessage = "צדיק, על מנת שנוכל לחשב את הלימוד היומי, עליך ללחוץ על הגדרות > הרשאות ולאשר את 'הרשאת מיקום' (חישוב הלימוד היומי תלוי במיקום שלך)";
             return isPermissionRequestRequired(activity, Location_Permission, requestCode, message, settingsMessage, showDialog);
+        }
+        return false;
+    }
+
+    @SuppressLint("NewApi")
+    public static boolean isPermissionNotificationRequired(Activity activity, int requestCode, boolean showDialog) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            String message = "צדיק ביקשת לקבל תזכורות יומיות, על מנת שהתזכורות יופיעו עליך לאשר את 'הרשאת התראות'";
+            String settingsMessage = "צדיק ביקשת לקבל תזכורות יומיות, על מנת שהתזכורות יופיעו עליך ללחוץ על הגדרות > הרשאות ולאשר את 'הרשאת התראות'";
+            return isPermissionRequestRequired(activity, Notification_Permission, requestCode, message, settingsMessage, showDialog);
         }
         return false;
     }
