@@ -1,12 +1,16 @@
 apply plugin: 'com.android.library'
 
+Properties properties = new Properties()
+properties.load(project.rootProject.file("gradle.properties").newDataInputStream())
+def $sdk = properties.getProperty("sdk") as Integer
+
 android {
-    compileSdkVersion 33
-    buildToolsVersion "33.0.1"
+    compileSdk $sdk
+    namespace 'com.github.johnpersano.supertoasts'
 
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 33
+        minSdk 14
+        targetSdk $sdk
     }
 
     buildTypes {
