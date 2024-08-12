@@ -100,18 +100,23 @@ public class MainActivity extends Activity {
                 ignoringBatteryOptimizations();
             }
 
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-//                checkExactAlarmsPermission();
-//            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                checkExactAlarmsPermission();
+            }
         }
 
-        HokUtils.setAlarm(getApplicationContext());
+        callToSetAlarm();
+    }
+
+    private void callToSetAlarm() {
+        if (canScheduleExactAlarms()) {
+            HokUtils.setAlarm(getApplicationContext());
+        }
     }
 
     @SuppressLint("NewApi")
     private void checkExactAlarmsPermission() {
-        AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-        if (!alarmManager.canScheduleExactAlarms()) {
+        if (!canScheduleExactAlarms()) {
             ((TextView) new AlertDialog.Builder(this)
                     .setTitle("צדיק תן לנו הרשאה")
                     .setIcon(drawable.ic_input_add)
@@ -128,6 +133,15 @@ public class MainActivity extends Activity {
                     .show().findViewById(android.R.id.message))
                     .setMovementMethod(LinkMovementMethod.getInstance());
         }
+    }
+
+    private boolean canScheduleExactAlarms() {
+        AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !alarmManager.canScheduleExactAlarms()) {
+            return false;
+        }
+
+        return true;
     }
 
     @SuppressLint("NewApi")
@@ -225,9 +239,9 @@ public class MainActivity extends Activity {
                     sendLocationToWebView(fileName);
                 }
                 break;
-//            case 4: // permission for SCHEDULE_EXACT_ALARM
-//                callToAlarmReceiver();
-//                break;
+            case 4: // permission for SCHEDULE_EXACT_ALARM
+                callToSetAlarm();
+                break;
             default:
                 break;
         }

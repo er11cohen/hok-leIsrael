@@ -135,7 +135,12 @@ public class HokUtils extends Activity {
         return PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE;
     }
 
+    @SuppressLint("ScheduleExactAlarm")
     private static void setAlarmTime(AlarmManager alarmManager, Calendar calendar, PendingIntent pendingIntent) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !alarmManager.canScheduleExactAlarms()) {
+            return;
+        }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
 //            AlarmManager.AlarmClockInfo ac = new AlarmManager.AlarmClockInfo(calendar.getTimeInMillis(), pendingIntent);
