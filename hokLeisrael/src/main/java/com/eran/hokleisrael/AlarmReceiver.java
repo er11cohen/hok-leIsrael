@@ -11,7 +11,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         //Toast.makeText(context,"AlarmReceiver - BroadcastReceiver",Toast.LENGTH_LONG).show();
 
-        // setAlarm for next time of next time of notifications
+        // setAlarm for next time of notifications
         HokUtils.setAlarm(context);
         if (intent.getAction() != null && intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
             return;
