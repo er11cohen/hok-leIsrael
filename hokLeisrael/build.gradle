@@ -36,3 +36,9 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation files('libs/zmanim-1.3.0.jar')
 }
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
+}
