@@ -762,7 +762,7 @@ public class WebActivity extends Activity {
     }
 
     private void openVoiceHokLeisrael() {
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.kolhalashon.com/New/chok.aspx")));
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www2.kolhalashon.com/#/regularSite/searchResults/94/21/Chok%20Leyisrael?urlFilters=3:1%7C")));
     }
 }
 

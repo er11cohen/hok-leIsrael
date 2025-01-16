@@ -12,8 +12,8 @@ android {
         applicationId "com.eran.hokleisrael"
         minSdk 14
         targetSdk $sdk
-        versionCode = 10903
-        versionName = "1.9.3"
+        versionCode = 10905
+        versionName = "1.9.5"
         compileOptions {
             sourceCompatibility JavaVersion.VERSION_1_7
             targetCompatibility JavaVersion.VERSION_1_7
@@ -35,4 +35,10 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.2.4'
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation files('libs/zmanim-1.3.0.jar')
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
 }
