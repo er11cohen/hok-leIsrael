@@ -1,16 +1,4 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
-
-<!--    <CheckBoxPreference-->
-<!--        android:key="CBAlignText"-->
-<!--        android:summary="@string/pref_description_AlignText"-->
-<!--         android:icon="@drawable/text_align_left"-->
-<!--		/>-->
-<!--  -->
-<!-- <CheckBoxPreference-->
-<!--        android:key="CBRemoveNikud"-->
-<!--        android:summary="@string/pref_description_RemoveNikud"-->
-<!--         android:icon="@drawable/nikud"-->
-<!--		/>-->
   <CheckBoxPreference
       	android:defaultValue="true"
         android:key="CBLiveInIsrael"
