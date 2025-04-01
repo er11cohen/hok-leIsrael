@@ -32,12 +32,6 @@ public class SettingsActivity extends PreferenceActivity {
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
- /// /// /////
-        View decorView = getWindow().getDecorView();
-        decorView.setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         setupSimplePreferencesScreen();
@@ -74,6 +68,7 @@ public class SettingsActivity extends PreferenceActivity {
         addPreferencesFromResource(R.xml.pref_time_picker);
         addPreferencesFromResource(R.xml.pref_number_picker);
 
+        getListView().setFitsSystemWindows(true);
 
         // Add 'notifications' preferences, and a corresponding header.
         //PreferenceCategory PreferenceCategoryPhone = new PreferenceCategory(this);
