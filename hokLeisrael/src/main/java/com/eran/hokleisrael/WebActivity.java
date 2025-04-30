@@ -682,7 +682,7 @@ public class WebActivity extends Activity {
             String[] parashotStr = items[i].split(",");
             String parashName = parashotStr[0].toString();
             if (parshEn.equals(parashName)) {
-                day = Integer.parseInt(parashotStr[index]);
+                day = Integer.parseInt(parashotStr[index].trim());
                 scrollY = 0;
                 if (index != 1)//for Sunday not need to jump
                 {
