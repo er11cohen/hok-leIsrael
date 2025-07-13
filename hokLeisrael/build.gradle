@@ -12,8 +12,8 @@ android {
         applicationId "com.eran.hokleisrael"
         minSdk 14
         targetSdk $sdk
-        versionCode = 10905
-        versionName = "1.9.5"
+        versionCode = 10906
+        versionName = "1.9.6"
         compileOptions {
             sourceCompatibility JavaVersion.VERSION_20
             targetCompatibility JavaVersion.VERSION_20
