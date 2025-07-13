@@ -67,6 +67,7 @@ public class SettingsActivity extends PreferenceActivity {
         addPreferencesFromResource(R.xml.pref_time_picker);
         addPreferencesFromResource(R.xml.pref_number_picker);
 
+        getListView().setFitsSystemWindows(true);
 
         // Add 'notifications' preferences, and a corresponding header.
         //PreferenceCategory PreferenceCategoryPhone = new PreferenceCategory(this);

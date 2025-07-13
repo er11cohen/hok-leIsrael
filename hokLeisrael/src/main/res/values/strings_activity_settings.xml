@@ -3,8 +3,6 @@
     <string name="title_activity_settings">הגדרות</string>
 
     <string name="pref_header_general">General</string>
-    <string name="pref_description_AlignText">יישור לימין - אם במכשירך הטקסטים מוצגים הפוך או אם הניקוד לעיתים אינו מתחת לאותיות</string>
-     <string name="pref_description_RemoveNikud">הסרת טעמים וניקוד - אם מכשירך לא תומך בטעמים וניקוד</string>
     <string name="pref_description_LiveInIsrael">מיקום - אני גר בישראל (נדרש כדי לחשב את הלימוד היומי)</string>
 
     
