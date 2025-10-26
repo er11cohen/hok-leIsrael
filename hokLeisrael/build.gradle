@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "com.eran.hokleisrael"
-        minSdk 14
+        minSdk 23
         targetSdk $sdk
         versionCode = 10906
         versionName = "1.9.6"

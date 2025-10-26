@@ -15,6 +15,7 @@ import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -69,7 +70,6 @@ public class WebActivity extends Activity {
     String phoneStatus;
     int startRingerMode = 2;//RINGER_MODE_NORMAL
     ActionBar actionBar = null;
-    int timeToLoad = 2000;//1100;
     boolean weekly = false;
     boolean isCurrentDay = false;
     Map<String, String> currentDayMap = null;
@@ -193,20 +193,12 @@ public class WebActivity extends Activity {
                 Utils.setOpacity(wv, 0.1);
                 Utils.showWebView(wv, progressBar, true);
                 if (scrollY > 0 || queryAliya != null) {
-                    new Handler().postDelayed(new Runnable() {
-                        public void run() {
-                            ChangeWebViewBySettings();
-                            if (queryAliya != null) {
-                                findAliyot(queryAliya);
-                            } else {
-                                wv.scrollTo(0, scrollY);
-                            }
-
-                            pageReady = true;
-                            queryAliya = null;
-                            Utils.setOpacity(wv, 1);
+                    wv.postVisualStateCallback(12345, new WebView.VisualStateCallback() {
+                        @Override
+                        public void onComplete(long requestId) {
+                            waitForCompleteLayout(view, WebActivity.this::scrollToLocation);
                         }
-                    }, timeToLoad);
+                    });
                 } else {
                     ChangeWebViewBySettings();
                     pageReady = true;
@@ -214,6 +206,43 @@ public class WebActivity extends Activity {
                 }
             }
         });
+    }
+
+    private void waitForCompleteLayout(WebView wv, Runnable callback) {
+        // Check if dimensions are stable
+        final int[] previousHeight = {wv.getContentHeight()};
+
+        Handler handler = new Handler(Looper.getMainLooper());
+        Runnable checkStability = new Runnable() {
+
+            @Override
+            public void run() {
+                int currentHeight = wv.getContentHeight();
+
+                if (currentHeight == previousHeight[0] && currentHeight > 0) {
+                    // Height is stable, likely ready
+                    new Handler().postDelayed(callback, 50);
+                } else {
+                    previousHeight[0] = currentHeight;
+                    handler.postDelayed(this, 50);
+                }
+            }
+        };
+
+        handler.postDelayed(checkStability, 50);
+    }
+
+    private void scrollToLocation() {
+        ChangeWebViewBySettings();
+        if (queryAliya != null) {
+            findAliyot(queryAliya);
+        } else {
+            wv.scrollTo(0, scrollY);
+        }
+
+        pageReady = true;
+        queryAliya = null;
+        Utils.setOpacity(wv, 1);
     }
 
     private void ChangeWebViewBySettings() {

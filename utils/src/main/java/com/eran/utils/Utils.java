@@ -2,7 +2,6 @@ package com.eran.utils;
 
 import android.R.drawable;
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -21,7 +20,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -148,11 +146,7 @@ public class Utils extends Activity {
         double longitude;
         Location location = null;
 
-        if (isMarshmallowPlusDevice()) {
-            if (PackageManager.PERMISSION_GRANTED == myContext.checkSelfPermission(Location_Permission)) {
-                location = getLastKnownLocation(myContext);//getLocation(myContext);
-            }
-        } else {
+        if (PackageManager.PERMISSION_GRANTED == myContext.checkSelfPermission(Location_Permission)) {
             location = getLastKnownLocation(myContext);
         }
 
@@ -342,13 +336,8 @@ public class Utils extends Activity {
 //	     }
 //	  }
 
-    @SuppressLint("NewApi")
     public static void loadJS(WebView wv, String jsStr) {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-            wv.evaluateJavascript(jsStr, null);
-        } else {
-            wv.loadUrl("javascript:" + jsStr);
-        }
+        wv.evaluateJavascript(jsStr, null);
     }
 
     public static void firstDoubleClickInfo(SharedPreferences references, final WeakReference<Activity> aReference) {
@@ -414,12 +403,6 @@ public class Utils extends Activity {
         return defaultSharedPreferences.getBoolean(permission, true);
     }
 
-
-    public static boolean isMarshmallowPlusDevice() {
-        return Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1;
-    }
-
-    @TargetApi(Build.VERSION_CODES.M)
     private static boolean isPermissionRequestRequired(final Activity activity,
                                                        @NonNull final String permission,
                                                        final int requestCode,
@@ -471,14 +454,10 @@ public class Utils extends Activity {
         return false;
     }
 
-    @SuppressLint("NewApi")
     public static boolean isPermissionLocationRequired(Activity activity, int requestCode, boolean showDialog) {
-        if (isMarshmallowPlusDevice()) {
-            String message = "צדיק, על מנת שנוכל לחשב את הלימוד היומי, עליך לאשר את 'הרשאת מיקום'  (חישוב הלימוד היומי תלוי במיקום שלך)";
-            String settingsMessage = "צדיק, על מנת שנוכל לחשב את הלימוד היומי, עליך ללחוץ על הגדרות > הרשאות ולאשר את 'הרשאת מיקום' (חישוב הלימוד היומי תלוי במיקום שלך)";
-            return isPermissionRequestRequired(activity, Location_Permission, requestCode, message, settingsMessage, showDialog);
-        }
-        return false;
+        String message = "צדיק, על מנת שנוכל לחשב את הלימוד היומי, עליך לאשר את 'הרשאת מיקום'  (חישוב הלימוד היומי תלוי במיקום שלך)";
+        String settingsMessage = "צדיק, על מנת שנוכל לחשב את הלימוד היומי, עליך ללחוץ על הגדרות > הרשאות ולאשר את 'הרשאת מיקום' (חישוב הלימוד היומי תלוי במיקום שלך)";
+        return isPermissionRequestRequired(activity, Location_Permission, requestCode, message, settingsMessage, showDialog);
     }
 
     @SuppressLint("NewApi")
@@ -549,13 +528,8 @@ public class Utils extends Activity {
         return Html.fromHtml(html);
     }
 
-    @SuppressLint("NewApi")
     public static File getFilePath(Context context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            return context.getExternalFilesDir(null);
-        }
-
-        return Environment.getExternalStorageDirectory();
+        return context.getExternalFilesDir(null);
     }
 
 

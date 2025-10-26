@@ -9,7 +9,7 @@ android {
     namespace 'com.eran.utils'
 
     defaultConfig {
-        minSdk 14
+        minSdk 23
         targetSdk $sdk
         compileOptions {
             sourceCompatibility JavaVersion.VERSION_20

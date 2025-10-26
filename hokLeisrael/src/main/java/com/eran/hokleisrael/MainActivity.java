@@ -146,10 +146,6 @@ public class MainActivity extends Activity {
 
     @SuppressLint("NewApi")
     private void ignoringBatteryOptimizations() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return;
-        }
-
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         if (!pm.isIgnoringBatteryOptimizations(getPackageName())) {
             ((TextView) new AlertDialog.Builder(this)
