@@ -34,6 +34,7 @@ import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -350,6 +351,12 @@ public class Utils extends Activity {
         Boolean firstDoubleClickInfo = references.getBoolean("firstDoubleClickInfo", true);
         if (firstDoubleClickInfo) {
             SuperActivityToast superActivityToast = new SuperActivityToast(activity);
+
+            View toastView = superActivityToast.getView();
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) toastView.getLayoutParams();
+            params.bottomMargin = 200;
+            toastView.setLayoutParams(params);
+
             superActivityToast.setText("כדי להיכנס ולצאת ממסך מלא ניתן להקליק הקלקה כפולה");
             superActivityToast.setDuration(10000);
             superActivityToast.setBackground(SuperToast.Background.RED);
