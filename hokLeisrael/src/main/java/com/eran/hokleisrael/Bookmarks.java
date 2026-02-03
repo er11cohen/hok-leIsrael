@@ -78,11 +78,6 @@ public class Bookmarks extends Activity {
                     superActivityToast.setBackground(SuperToast.Background.GRAY);
                     superActivityToast.setButtonIcon(SuperToast.Icon.Dark.UNDO, "בטל");
 
-                    View toastView = superActivityToast.getView();
-                    FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) toastView.getLayoutParams();
-                    params.bottomMargin = 200;
-                    toastView.setLayoutParams(params);
-
                     /* This part is important, pass the Bundle we created earlier as a second parameter here */
                     final Bundle bundle = new Bundle();
                     bundle.putParcelable("bookmarkForDelete", bookmarkForDelete);
