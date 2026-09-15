@@ -3,33 +3,33 @@ apply plugin: 'com.android.application'
 Properties properties = new Properties()
 properties.load(project.rootProject.file("gradle.properties").newDataInputStream())
 def $sdk = properties.getProperty("sdk") as Integer
+def $minSdkVersion = properties.getProperty("minSdkVersion") as Integer
+def $javaVersion = properties.getProperty("javaVersion")
 
 android {
     namespace 'com.eran.hokleisrael'
-    compileSdk $sdk
+    compileSdkVersion $sdk
 
     defaultConfig {
         applicationId "com.eran.hokleisrael"
-        minSdk 23
+        minSdk $minSdkVersion
         targetSdk $sdk
         versionCode = 10906
         versionName = "1.9.6"
         compileOptions {
-            sourceCompatibility JavaVersion.VERSION_20
-            targetCompatibility JavaVersion.VERSION_20
+            sourceCompatibility JavaVersion.toVersion($javaVersion)
+            targetCompatibility JavaVersion.toVersion($javaVersion)
         }
     }
 
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
 }
 
 dependencies {
-    implementation project(':supertoasts')
     implementation project(':utils')
     implementation 'com.android.support:support-v4:27.1.1'
     implementation 'com.google.code.gson:gson:2.2.4'

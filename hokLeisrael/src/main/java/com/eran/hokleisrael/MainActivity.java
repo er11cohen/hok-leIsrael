@@ -42,7 +42,6 @@ public class MainActivity extends Activity {
     // from manifest
     public static final String BROADCAST = "com.eran.hokleisrael.android.action.broadcast";
     final String shareTextIntent = "חוק לישראל - hok leisrael https://play.google.com/store/apps/details?id=com.eran.hokleisrael";
-    // Toast.makeText(this,Integer.toString(scrollY),Toast.LENGTH_LONG).show();
 
     SharedPreferences sharedPreferences;
     SharedPreferences HLPreferences;
@@ -96,7 +95,7 @@ public class MainActivity extends Activity {
         boolean timeFridayCBNotificationDaily = prefs.getBoolean("notifications_CB_timeFridayNotification", false);
         if (timeCBNotificationDaily || timeFridayCBNotificationDaily) {
             // ask for notification permission
-            if(!Utils.isPermissionNotificationRequired(MainActivity.this, 1, true)) {
+            if (!Utils.isPermissionNotificationRequired(MainActivity.this, 1, true)) {
                 ignoringBatteryOptimizations();
             }
 
@@ -190,8 +189,6 @@ public class MainActivity extends Activity {
         String humashHe = ((Button) v).getText().toString();
         Intent intent = new Intent(getApplicationContext(),
                 ParashotActivity.class);
-        // intent.putExtra("humashHe", ((Button)v).getText());
-        // intent.putExtra("humashEn", humashEn);
         Parash parash = new Parash();
         parash.setHumashHe(humashHe);
         parash.setHumashEn(humashEn);
@@ -222,7 +219,7 @@ public class MainActivity extends Activity {
 
             case 2:/* from bookmarks */
                 if (data != null && data.getExtras().containsKey("bookmark")) {
-                    Parash bookmark = (Parash) data.getParcelableExtra("bookmark");
+                    Parash bookmark = data.getParcelableExtra("bookmark");
                     Intent intent = new Intent(getApplicationContext(),
                             WebActivity.class);
                     intent.putExtra("bookmark", bookmark);
@@ -347,8 +344,6 @@ public class MainActivity extends Activity {
                 Calendar tishaBavCal = Calendar.getInstance();
                 JewishDate jd = new JewishDate(tishaBavCal);
                 int day = jd.getJewishDayOfMonth();
-                // Toast.makeText(this,"day " +
-                // Integer.toString(day),Toast.LENGTH_LONG).show();
                 if ((day == 9)
                         || (day == 10 && tishaBavCal.get(Calendar.DAY_OF_WEEK) == 1)/*
                  * דחוי
@@ -463,7 +458,6 @@ public class MainActivity extends Activity {
                             }).show().findViewById(android.R.id.message))
                     .setMovementMethod(LinkMovementMethod.getInstance());
         } else {
-            // intentCurrentDay.putExtra("day", dayOfWeek);
             parash.setDay(dayOfWeek);
             intentCurrentDay.putExtra("parash", parash);
             startActivity(intentCurrentDay);
@@ -485,7 +479,6 @@ public class MainActivity extends Activity {
         if (day == 5 && !fridayNotification) {
             ChatzosCal.add(Calendar.HOUR_OF_DAY, 12);
 
-            // if (currentCal.getTime().after(ChatzosCal.getTime()))
             if (currentCal.after(ChatzosCal)) {
                 return 6;// Friday night
             } else {
@@ -515,9 +508,7 @@ public class MainActivity extends Activity {
                         .get(AlotHashchar.MINUTE)));
 
                 return -1;// flag to open dialog
-            }
-            // else if (currentCal.getTime().before(zc.getAlosHashachar()))
-            else if (currentCal.before(AlotHashchar)) {
+            } else if (currentCal.before(AlotHashchar)) {
                 return 6;// Friday night
             } else {
                 return 7;// Friday day
@@ -575,50 +566,38 @@ public class MainActivity extends Activity {
                 .setMessage("צדיק בשבת אין לימוד יומי בחוק לישראל, אך תוכל ללמוד סדר מעמדות או אורחות חיים ליום השבת.");
 
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "אורחות חיים",
-                new DialogInterface.OnClickListener() {
+                (dialog, id) -> {
 
-                    public void onClick(DialogInterface dialog, int id) {
+                    Parash parash = new Parash();
+                    Intent intent = new Intent(getApplicationContext(),
+                            WebActivity.class);
+                    parash.setHumashEn("appendix");
+                    parash.setParshEn("orhotHaim");
+                    parash.setParshHe("אורחות חיים");
+                    parash.setWeekly(true);
+                    parash.setDay(7);
+                    intent.putExtra("parash", parash);
+                    startActivity(intent);
 
-                        Parash parash = new Parash();
-                        Intent intent = new Intent(getApplicationContext(),
-                                WebActivity.class);
-                        parash.setHumashEn("appendix");
-                        parash.setParshEn("orhotHaim");
-                        parash.setParshHe("אורחות חיים");
-                        parash.setWeekly(true);
-                        parash.setDay(7);
-                        intent.putExtra("parash", parash);
-                        startActivity(intent);
-
-                    }
                 });
 
         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "מעמדות",
-                new DialogInterface.OnClickListener() {
+                (dialog, id) -> {
 
-                    public void onClick(DialogInterface dialog, int id) {
-
-                        Parash parash = new Parash();
-                        Intent intent = new Intent(getApplicationContext(),
-                                WebActivity.class);
-                        parash.setHumashEn("appendix");
-                        parash.setParshEn("sederMamadot");
-                        parash.setParshHe("מעמדות");
-                        parash.setWeekly(true);
-                        parash.setDay(7);
-                        intent.putExtra("parash", parash);
-                        startActivity(intent);
-                    }
+                    Parash parash = new Parash();
+                    Intent intent = new Intent(getApplicationContext(),
+                            WebActivity.class);
+                    parash.setHumashEn("appendix");
+                    parash.setParshEn("sederMamadot");
+                    parash.setParshHe("מעמדות");
+                    parash.setWeekly(true);
+                    parash.setDay(7);
+                    intent.putExtra("parash", parash);
+                    startActivity(intent);
                 });
 
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "בהזדמנות אחרת",
-                new DialogInterface.OnClickListener() {
-
-                    public void onClick(DialogInterface dialog, int id) {
-
-                        // auto close
-
-                    }
+                (dialog, id) -> {
                 });
 
         alertDialog.show();
@@ -643,10 +622,6 @@ public class MainActivity extends Activity {
             default:
                 for (int i = 0; i < permissions.length; i++) {
                     String permission = permissions[i];
-//                    int grantResult = grantResults[i];
-//                    if (PackageManager.PERMISSION_GRANTED == grantResult) {
-//                                Toast.makeText(this,"PERMISSION GRANTED",Toast.LENGTH_LONG).show();
-//                            }
                     switch (permission) {
                         case Utils.Location_Permission:
                             Utils.firstTimeAskedPermission(MainActivity.this, Utils.Location_Permission);

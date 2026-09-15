@@ -3,20 +3,25 @@ apply plugin: 'com.android.library'
 Properties properties = new Properties()
 properties.load(project.rootProject.file("gradle.properties").newDataInputStream())
 def $sdk = properties.getProperty("sdk") as Integer
+def $minSdkVersion = properties.getProperty("minSdkVersion") as Integer
+def $javaVersion = properties.getProperty("javaVersion")
 
 android {
-    compileSdk $sdk
+    compileSdkVersion $sdk
     namespace 'com.github.johnpersano.supertoasts'
 
     defaultConfig {
-        minSdk 23
+        minSdk $minSdkVersion
         targetSdk $sdk
+        compileOptions {
+            sourceCompatibility JavaVersion.toVersion($javaVersion)
+            targetCompatibility JavaVersion.toVersion($javaVersion)
+        }
     }
 
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
 }

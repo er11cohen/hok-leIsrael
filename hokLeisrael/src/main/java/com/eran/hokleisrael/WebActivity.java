@@ -13,6 +13,7 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.media.AudioManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -29,6 +30,7 @@ import android.webkit.WebView.FindListener;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+import android.window.OnBackInvokedDispatcher;
 
 import com.eran.utils.Utils;
 import com.google.gson.Gson;
@@ -82,6 +84,11 @@ public class WebActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.BAKLAVA) {
+            getOnBackInvokedDispatcher().registerOnBackInvokedCallback(
+                    OnBackInvokedDispatcher.PRIORITY_DEFAULT, this::backButton);
+        }
+
         defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         fullScreen = defaultSharedPreferences.getBoolean("CBFullScreen", false);
         setContentView(R.layout.activity_web);
@@ -94,7 +101,6 @@ public class WebActivity extends Activity {
         actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         if (fullScreen) {
-            // actionBar.hide();
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
 
@@ -105,7 +111,7 @@ public class WebActivity extends Activity {
 
         Intent intent = getIntent();
         if (intent.getExtras().containsKey("bookmark")) {
-            Parash bookmark = (Parash) intent.getParcelableExtra("bookmark");
+            Parash bookmark = intent.getParcelableExtra("bookmark");
             scrollY = bookmark.getScrollY();
             parshHe = bookmark.getParshHe();
             day = bookmark.getDay();
@@ -114,7 +120,7 @@ public class WebActivity extends Activity {
             weekly = bookmark.getWeekly();
             isCurrentDay = bookmark.getIsCurrentDay();
         } else {
-            parash = (Parash) intent.getParcelableExtra("parash");
+            parash = intent.getParcelableExtra("parash");
             parshHe = parash.getParshHe();
             day = parash.getDay();
             parshEn = parash.getParshEn();
@@ -125,8 +131,8 @@ public class WebActivity extends Activity {
         }
 
 
-        wv = (WebView) findViewById(R.id.webViewHL);
-        progressBar = (ProgressBar) findViewById(R.id.progressBarHL);
+        wv = findViewById(R.id.webViewHL);
+        progressBar = findViewById(R.id.progressBarHL);
         wvSetting = wv.getSettings();
         registerForContextMenu(progressBar);
 
@@ -139,7 +145,7 @@ public class WebActivity extends Activity {
 
         if (isCurrentDay) //for move between currentDay and appendix
         {
-            currentDayMap = new HashMap<String, String>();
+            currentDayMap = new HashMap<>();
             currentDayMap.put("parshHe", parshHe);
             currentDayMap.put("day", Integer.toString(day));
             currentDayMap.put("parshEn", parshEn);
@@ -618,12 +624,7 @@ public class WebActivity extends Activity {
         new AlertDialog.Builder(this)
                 .setTitle("תוספות יומיות")
                 .setItems(appendix,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int i) {
-                                dailyAppendixMenuSelected(i);
-                                //Toast.makeText(getApplicationContext(),Integer.toString(i),Toast.LENGTH_LONG).show();
-                            }
-                        })
+                        (dialog, i) -> dailyAppendixMenuSelected(i))
                 .show();
     }
 
@@ -778,8 +779,14 @@ public class WebActivity extends Activity {
 
     @Override
     public void onBackPressed() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.BAKLAVA) {
+            backButton();
+        }
+    }
+
+    private void backButton() {
         wv.clearFocus();//for close pop-up of copy, select etc.
-        super.onBackPressed();
+        finish();
     }
 
     //check if the current limud is HokLeisrael
