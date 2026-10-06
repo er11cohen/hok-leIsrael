@@ -20,8 +20,7 @@
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|screenSize"
-            android:exported="true"
-            android:launchMode="singleTask">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -30,8 +29,7 @@
         <activity
             android:name=".WebActivity"
             android:configChanges="orientation|screenSize"
-            android:label="@string/title_activity_web"
-            android:launchMode="singleTask" />
+            android:label="@string/title_activity_web" />
         <activity
             android:name=".ParashotActivity"
             android:label="@string/title_activity_parashot"/>
