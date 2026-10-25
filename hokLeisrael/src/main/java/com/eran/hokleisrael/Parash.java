@@ -16,8 +16,8 @@ public class Parash implements Parcelable {//more efficient than Serializable
 
     private int day;
     private int scrollY = 0;
-    private Boolean weekly = false;//?????? ?? ????? ??? ???? ???? ?????? ??????? ????
-    private Boolean isCurrentDay = false;//for daily Limud - hok leisrael ?? ???? ??? ?????? ????? ?????? ?? ???? ????
+    private boolean weekly = false;
+    private boolean isCurrentDay = false;//for daily Limud - hok leisrael
     private String title;
 
     public Parash() {
@@ -75,7 +75,7 @@ public class Parash implements Parcelable {//more efficient than Serializable
 
 
     public Parash(String parshHe, String parshEn, String humashEn,
-                  int day, int scrollY, Boolean weekly, Boolean isCurrentDay, String title) {
+                  int day, int scrollY, boolean weekly, boolean isCurrentDay, String title) {
         this.parshEn = parshEn;
         this.parshHe = parshHe;
         this.humashEn = humashEn;
@@ -104,22 +104,22 @@ public class Parash implements Parcelable {//more efficient than Serializable
     }
 
 
-    public Boolean getWeekly() {
+    public boolean getWeekly() {
         return weekly;
     }
 
 
-    public void setWeekly(Boolean weekly) {
+    public void setWeekly(boolean weekly) {
         this.weekly = weekly;
     }
 
 
-    public Boolean getIsCurrentDay() {
+    public boolean getIsCurrentDay() {
         return isCurrentDay;
     }
 
 
-    public void setIsCurrentDay(Boolean isCurrentDay) {
+    public void setIsCurrentDay(boolean isCurrentDay) {
         this.isCurrentDay = isCurrentDay;
     }
 
@@ -165,10 +165,8 @@ public class Parash implements Parcelable {//more efficient than Serializable
         parshIndex = in.readInt();
         day = in.readInt();
         scrollY = in.readInt();
-        byte weeklyVal = in.readByte();
-        weekly = weeklyVal == 0x02 ? null : weeklyVal != 0x00;
-        byte isCurrentDayVal = in.readByte();
-        isCurrentDay = isCurrentDayVal == 0x02 ? null : isCurrentDayVal != 0x00;
+        weekly = in.readByte() != 0x00;
+        isCurrentDay = in.readByte() != 0x00;
         title = in.readString();
     }
 
@@ -187,16 +185,8 @@ public class Parash implements Parcelable {//more efficient than Serializable
         dest.writeInt(parshIndex);
         dest.writeInt(day);
         dest.writeInt(scrollY);
-        if (weekly == null) {
-            dest.writeByte((byte) (0x02));
-        } else {
-            dest.writeByte((byte) (weekly ? 0x01 : 0x00));
-        }
-        if (isCurrentDay == null) {
-            dest.writeByte((byte) (0x02));
-        } else {
-            dest.writeByte((byte) (isCurrentDay ? 0x01 : 0x00));
-        }
+        dest.writeByte((byte) (weekly ? 0x01 : 0x00));
+        dest.writeByte((byte) (isCurrentDay ? 0x01 : 0x00));
         dest.writeString(title);
     }
 

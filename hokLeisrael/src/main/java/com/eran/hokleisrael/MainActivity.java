@@ -249,7 +249,8 @@ public class MainActivity extends Activity {
         {
             return;
         }
-        ArrayList<Parash> locationList = new ArrayList<Parash>();
+
+        ArrayList<Parash> locationList;
         Gson gson = new Gson();
         locationList = gson.fromJson(preferencesLocationsJson,
                 new TypeToken<ArrayList<Parash>>() {
@@ -393,29 +394,23 @@ public class MainActivity extends Activity {
                             .setMessage("צדיק בחר פרשה")
                             .setPositiveButton(
                                     parashFinal.getParshHe().split("&")[0],
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog,
-                                                            int which) {
-                                            parashFinal.setParshHe(parashFinal
-                                                    .getParshHe().split("&")[0]);
-                                            parashFinal.setParshEn(parashFinal
-                                                    .getParshEn().split("&")[0]);
-                                            continueToOpenLimud(parashFinal,
-                                                    dayOfWeek);
-                                        }
+                                    (dialog, which) -> {
+                                        parashFinal.setParshHe(parashFinal
+                                                .getParshHe().split("&")[0]);
+                                        parashFinal.setParshEn(parashFinal
+                                                .getParshEn().split("&")[0]);
+                                        continueToOpenLimud(parashFinal,
+                                                dayOfWeek);
                                     })
                             .setNegativeButton(
                                     parashFinal.getParshHe().split("&")[1],
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog,
-                                                            int which) {
-                                            parashFinal.setParshHe(parashFinal
-                                                    .getParshHe().split("&")[1]);
-                                            parashFinal.setParshEn(parashFinal
-                                                    .getParshEn().split("&")[1]);
-                                            continueToOpenLimud(parashFinal,
-                                                    dayOfWeek);
-                                        }
+                                    (dialog, which) -> {
+                                        parashFinal.setParshHe(parashFinal
+                                                .getParshHe().split("&")[1]);
+                                        parashFinal.setParshEn(parashFinal
+                                                .getParshEn().split("&")[1]);
+                                        continueToOpenLimud(parashFinal,
+                                                dayOfWeek);
                                     }).show().findViewById(android.R.id.message))
                             .setMovementMethod(LinkMovementMethod.getInstance());
                 } else {
