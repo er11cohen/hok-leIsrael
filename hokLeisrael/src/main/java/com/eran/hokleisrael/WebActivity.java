@@ -13,9 +13,12 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.media.AudioManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
@@ -28,6 +31,7 @@ import android.webkit.WebView.FindListener;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+import android.window.OnBackInvokedDispatcher;
 
 import com.eran.utils.Utils;
 import com.google.gson.Gson;
@@ -46,7 +50,8 @@ import java.util.Map;
 
 public class WebActivity extends Activity {
 
-    private static final int ON_DO_NOT_DISTURB_CALLBACK_CODE = 1;
+    // for restoring the last position after the process was killed in the background
+    private static final String STATE_LOCATION_ID = "locationId";
 
     String tishaBeavStr = "tishaBeav";
 
@@ -69,7 +74,6 @@ public class WebActivity extends Activity {
     String phoneStatus;
     int startRingerMode = 2;//RINGER_MODE_NORMAL
     ActionBar actionBar = null;
-    int timeToLoad = 2000;//1100;
     boolean weekly = false;
     boolean isCurrentDay = false;
     Map<String, String> currentDayMap = null;
@@ -78,9 +82,15 @@ public class WebActivity extends Activity {
     String appName = "/HokLeisrael";
     boolean pageReady = false;
     String queryAliya = null;
+    String lastSavedTimeStamp = null;//id of the location saved by saveLastLocation()
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.BAKLAVA) {
+            getOnBackInvokedDispatcher().registerOnBackInvokedCallback(
+                    OnBackInvokedDispatcher.PRIORITY_DEFAULT, this::backButton);
+        }
 
         defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         fullScreen = defaultSharedPreferences.getBoolean("CBFullScreen", false);
@@ -94,7 +104,6 @@ public class WebActivity extends Activity {
         actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         if (fullScreen) {
-            // actionBar.hide();
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
 
@@ -105,28 +114,21 @@ public class WebActivity extends Activity {
 
         Intent intent = getIntent();
         if (intent.getExtras().containsKey("bookmark")) {
-            Parash bookmark = (Parash) intent.getParcelableExtra("bookmark");
-            scrollY = bookmark.getScrollY();
-            parshHe = bookmark.getParshHe();
-            day = bookmark.getDay();
-            parshEn = bookmark.getParshEn();
-            humashEn = bookmark.getHumashEn();
-            weekly = bookmark.getWeekly();
-            isCurrentDay = bookmark.getIsCurrentDay();
+            Parash bookmark = intent.getParcelableExtra("bookmark");
+            loadFromParash(bookmark);
         } else {
-            parash = (Parash) intent.getParcelableExtra("parash");
-            parshHe = parash.getParshHe();
-            day = parash.getDay();
-            parshEn = parash.getParshEn();
-            humashEn = parash.getHumashEn();
-            weekly = parash.getWeekly();
-            isCurrentDay = parash.getIsCurrentDay();
-            scrollY = parash.getScrollY();
+            parash = intent.getParcelableExtra("parash");
+            loadFromParash(parash);
         }
 
+        //the activity was recreated after the process was killed - the intent holds the
+        //values from the first time it was opened, so take the position saved in onPause
+        if (savedInstanceState != null) {
+            restoreLastLocation(savedInstanceState.getString(STATE_LOCATION_ID));
+        }
 
-        wv = (WebView) findViewById(R.id.webViewHL);
-        progressBar = (ProgressBar) findViewById(R.id.progressBarHL);
+        wv = findViewById(R.id.webViewHL);
+        progressBar = findViewById(R.id.progressBarHL);
         wvSetting = wv.getSettings();
         registerForContextMenu(progressBar);
 
@@ -139,7 +141,7 @@ public class WebActivity extends Activity {
 
         if (isCurrentDay) //for move between currentDay and appendix
         {
-            currentDayMap = new HashMap<String, String>();
+            currentDayMap = new HashMap<>();
             currentDayMap.put("parshHe", parshHe);
             currentDayMap.put("day", Integer.toString(day));
             currentDayMap.put("parshEn", parshEn);
@@ -152,6 +154,7 @@ public class WebActivity extends Activity {
 
     @SuppressLint("NewApi")
     private void LoadWebView() {
+        pageReady = false;//the position of the previous page is not relevant any more
         Utils.setOpacity(wv, 0.1);//for where the wv already exist
         Utils.showWebView(wv, progressBar, false);
 
@@ -193,20 +196,12 @@ public class WebActivity extends Activity {
                 Utils.setOpacity(wv, 0.1);
                 Utils.showWebView(wv, progressBar, true);
                 if (scrollY > 0 || queryAliya != null) {
-                    new Handler().postDelayed(new Runnable() {
-                        public void run() {
-                            ChangeWebViewBySettings();
-                            if (queryAliya != null) {
-                                findAliyot(queryAliya);
-                            } else {
-                                wv.scrollTo(0, scrollY);
-                            }
-
-                            pageReady = true;
-                            queryAliya = null;
-                            Utils.setOpacity(wv, 1);
+                    wv.postVisualStateCallback(12345, new WebView.VisualStateCallback() {
+                        @Override
+                        public void onComplete(long requestId) {
+                            waitForCompleteLayout(view, WebActivity.this::scrollToLocation);
                         }
-                    }, timeToLoad);
+                    });
                 } else {
                     ChangeWebViewBySettings();
                     pageReady = true;
@@ -214,6 +209,43 @@ public class WebActivity extends Activity {
                 }
             }
         });
+    }
+
+    private void waitForCompleteLayout(WebView wv, Runnable callback) {
+        // Check if dimensions are stable
+        final int[] previousHeight = {wv.getContentHeight()};
+
+        Handler handler = new Handler(Looper.getMainLooper());
+        Runnable checkStability = new Runnable() {
+
+            @Override
+            public void run() {
+                int currentHeight = wv.getContentHeight();
+
+                if (currentHeight == previousHeight[0] && currentHeight > 0) {
+                    // Height is stable, likely ready
+                    new Handler().postDelayed(callback, 50);
+                } else {
+                    previousHeight[0] = currentHeight;
+                    handler.postDelayed(this, 50);
+                }
+            }
+        };
+
+        handler.postDelayed(checkStability, 50);
+    }
+
+    private void scrollToLocation() {
+        ChangeWebViewBySettings();
+        if (queryAliya != null) {
+            findAliyot(queryAliya);
+        } else {
+            wv.scrollTo(0, scrollY);
+        }
+
+        pageReady = true;
+        queryAliya = null;
+        Utils.setOpacity(wv, 1);
     }
 
     private void ChangeWebViewBySettings() {
@@ -368,6 +400,55 @@ public class WebActivity extends Activity {
         saveLastLocation();
     }
 
+    //called after onStop, so saveLastLocation already ran
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        if (lastSavedTimeStamp != null) {
+            outState.putString(STATE_LOCATION_ID, lastSavedTimeStamp);
+        }
+    }
+
+    //takes the position that was saved in onPause, by its id.
+    //if it is not found the values of the intent stay as they are
+    private void restoreLastLocation(String locationId) {
+        if (locationId == null) {
+            return;
+        }
+
+        SharedPreferences preferencesLocations = getSharedPreferences("Locations", MODE_PRIVATE);
+        String preferencesLocationsJson = preferencesLocations
+                .getString("preferencesLocationsJson", null);
+        if (preferencesLocationsJson == null) {
+            return;
+        }
+
+        try {
+            ArrayList<Parash> locationList = new Gson().fromJson(preferencesLocationsJson,
+                    new TypeToken<ArrayList<Parash>>() {
+                    }.getType());
+
+            for (Parash location : locationList) {
+                if (locationId.equals(location.getTimeSaved())) {
+                    loadFromParash(location);
+                    break;
+                }
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    private void loadFromParash(Parash p) {
+        scrollY = p.getScrollY();
+        parshHe = p.getParshHe();
+        day = p.getDay();
+        parshEn = p.getParshEn();
+        humashEn = p.getHumashEn();
+        weekly = p.getWeekly();
+        isCurrentDay = p.getIsCurrentDay();
+    }
+
     private void saveLastLocation() {
         File path = Utils.getFilePath(getApplicationContext());
         File folder = new File(path + appName);
@@ -443,6 +524,8 @@ public class WebActivity extends Activity {
                         .edit();
                 editor.putString("preferencesLocationsJson", json);
                 editor.commit();
+
+                lastSavedTimeStamp = timeSaved;//only now the location can be restored
 
             } catch (Exception e) {
             }
@@ -589,12 +672,7 @@ public class WebActivity extends Activity {
         new AlertDialog.Builder(this)
                 .setTitle("תוספות יומיות")
                 .setItems(appendix,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int i) {
-                                dailyAppendixMenuSelected(i);
-                                //Toast.makeText(getApplicationContext(),Integer.toString(i),Toast.LENGTH_LONG).show();
-                            }
-                        })
+                        (dialog, i) -> dailyAppendixMenuSelected(i))
                 .show();
     }
 
@@ -699,7 +777,7 @@ public class WebActivity extends Activity {
         scrollY = wv.getScrollY();
         Parash parash = new Parash(parshHe, parshEn, humashEn, day, scrollY, weekly, isCurrentDay, title);
 
-        ArrayList<Parash> bookmarksList = new ArrayList<Parash>();
+        ArrayList<Parash> bookmarksList = new ArrayList<>();
         Gson gson = new Gson();
 
         if (bookmarksListJson != null) {
@@ -749,8 +827,14 @@ public class WebActivity extends Activity {
 
     @Override
     public void onBackPressed() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.BAKLAVA) {
+            backButton();
+        }
+    }
+
+    private void backButton() {
         wv.clearFocus();//for close pop-up of copy, select etc.
-        super.onBackPressed();
+        finish();
     }
 
     //check if the current limud is HokLeisrael

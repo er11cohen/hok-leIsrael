@@ -7,6 +7,7 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -109,6 +110,7 @@ public class HokUtils extends Activity {
                 hatzotCal = calcHatzotCalendar(6, zc, prefs);
             }
 
+            ///////for notification now/////////////////////////////////////////////////////
 //            android.widget.Toast.makeText(context, "setAlarmFriday", android.widget.Toast.LENGTH_LONG).show();
 //            Calendar alarmStart = Calendar.getInstance();
 //            alarmStart.add(Calendar.SECOND, 10);
@@ -128,10 +130,6 @@ public class HokUtils extends Activity {
     }
 
     private static int getPendingIntentFlag() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return PendingIntent.FLAG_UPDATE_CURRENT;
-        }
-
         return PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE;
     }
 
@@ -141,15 +139,9 @@ public class HokUtils extends Activity {
             return;
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
 //            AlarmManager.AlarmClockInfo ac = new AlarmManager.AlarmClockInfo(calendar.getTimeInMillis(), pendingIntent);
 //            alarmManager.setAlarmClock(ac, pendingIntent);
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-        } else {
-            alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-        }
     }
 
     private static Calendar calcHatzotCalendar(int dayToAdd, ZmanimCalendar zc,
@@ -241,26 +233,29 @@ public class HokUtils extends Activity {
             return;
         }
 
-        Intent intent = new Intent(context, MainActivity.class);
+        //same intent the launcher uses, so Android resumes the existing task as it is
+        Intent intent = Intent.makeMainActivity(new ComponentName(context, MainActivity.class));
         String showNotification = "צדיק הגיע זמן הלימוד היומי";
         int notifyID = DALY_ID;
+        int intentFlags = Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED;
 
         if (notificationKind != null && notificationKind.equals("friday")) {
             notifyID = FRIDAY_ID;
             showNotification = "צדיק הגיע זמן לימוד ליל שישי";
             intent.putExtra("fromNotification", "friday");
+            //replace the lesson that is open now with the Friday lesson
+            intentFlags = Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK;
         }
 
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, getPendingIntentFlag());
+        intent.setFlags(intentFlags);
+        //request code = notifyID, so the daily and Friday notifications don't share one PendingIntent
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, notifyID, intent, getPendingIntentFlag());
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         // for fix bug friday notification show twice
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            StatusBarNotification[] activeNotifications = notificationManager.getActiveNotifications();
-            if (activeNotifications.length > 0 && activeNotifications[0].getId() == FRIDAY_ID) {
-                return;
-            }
+        StatusBarNotification[] activeNotifications = notificationManager.getActiveNotifications();
+        if (activeNotifications.length > 0 && activeNotifications[0].getId() == FRIDAY_ID) {
+            return;
         }
 
 

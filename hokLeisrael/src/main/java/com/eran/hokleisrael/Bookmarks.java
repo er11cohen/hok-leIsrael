@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 
 import com.github.johnpersano.supertoasts.SuperActivityToast;
@@ -67,14 +68,8 @@ public class Bookmarks extends Activity {
                     bookmarksList.remove(index);
                     updateSharedPreferencesAndLV();
 
-                    /*try {*/
-                    //the bottom for undo
+                    //the botton for undo
 
-                    /* Create a Wrappers object to reattach our OnClickWrapper  */
-                    // Wrappers wrappers = new Wrappers();
-                    // wrappers.add(onClickWrapper);
-                    /* Recreate and reshow any SuperActivityToasts that were showing before orientation change */
-                    //SuperActivityToast.onRestoreState(savedInstanceState, Bookmarks.this, wrappers);
 
                     /* Show a SuperActivityToast with a button and OnClickWrapper */
                     SuperActivityToast superActivityToast = new SuperActivityToast(Bookmarks.this, SuperToast.Type.BUTTON);
